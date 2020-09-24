@@ -1,9 +1,11 @@
 # /usr/local/bin/python
-from .globals import app
-from .auth import *
+from .globals import app, db
+from .auth import login, register
+from .chat import generate_room
 
 __version__ = '0.0.1'
 
+db.create_all()
 
 @app.route('/')
 def index():
