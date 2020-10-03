@@ -10,9 +10,12 @@
             "request": "launch",
             "module": "flask",
             "env": {
+                "SECRET_KEY": "dev",
                 "FLASK_APP": "secrypto",
                 "FLASK_ENV": "development",
-                "FLASK_DEBUG": "1"
+                "FLASK_DEBUG": "1",
+                "FLASK_RUN_CERT": "adhoc",
+                //"FLASK_RUN_KEY": "security/server.key"
             },
             "args": [
                 "run",
