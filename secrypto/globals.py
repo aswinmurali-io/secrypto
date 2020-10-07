@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 app.config.update({
-    'SECRET_KEY': os.environ['SECRET_KEY'],
+    'SECRET_KEY': 'test',  # os.environ['SECRET_KEY'],
     'SQLALCHEMY_TRACK_MODIFICATIONS': False,
     'SQLALCHEMY_DATABASE_URI': 'sqlite:///site.db',
 })
