@@ -4,6 +4,9 @@ import flask
 
 from .globals import app, db
 
+from flask_cors import cross_origin
+
+
 
 class ChatQueue(db.Model):
     """ChatQueue class contains the table for storing all the chats in that
@@ -46,6 +49,7 @@ def chat{chat_id}():
 
 
 @app.route('/chat', methods=["POST"])
+@cross_origin
 def chat() -> str:
     if 'username' not in flask.session:
         flask.session['username'] = generate_uid()
