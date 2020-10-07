@@ -23,8 +23,7 @@
             "name": "Secrypto Client",
             "type": "dart",
             "request": "launch",
-            "program": "lib/main.dart",
-            "deviceId": "1",
+            "program": "secrypto_app/lib/main.dart",
             "showMemoryUsage": true
         },
     ]
