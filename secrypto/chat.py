@@ -49,7 +49,7 @@ def chat{chat_id}():
 
 
 @app.route('/chat', methods=["POST"])
-@cross_origin
+@cross_origin()
 def chat() -> str:
     if 'username' not in flask.session:
         flask.session['username'] = generate_uid()
