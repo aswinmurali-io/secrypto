@@ -1,54 +1,53 @@
-import random
+import secrets
 import string
+import flask
 
-from flask import session
-from flask.globals import request
-from flask.templating import render_template
-from flask_socketio import emit, join_room, leave_room, rooms
-
-from .globals import app, socketio
+from .globals import app, db
 
 
-@app.route('/getroom')
-def generate_room():
-    return ''.join(random.choices(f'{string.ascii_uppercase}{string.digits}', k=64))
+class ChatQueue(db.Model):
+    """ChatQueue class contains the table for storing all the chats in that
+    chat room inside a SQL table which can be accessed by both the users to get
+    pending messages.
+
+    Args:
+        db (Model): app's SQLAlchemy model instance.
+
+    Returns:
+        str: The table details
+    """
+    id: str = db.Column(db.Integer, primary_key=True)
+    user_id: str = db.Column(db.String(10), nullable=False)
+    user_msg: str = db.Column(db.String, nullable=False)
+
+    def __repr__(self) -> str:
+        return f'ChatQueue(user_id={self.user_id}, user_msg={self.user_msg}'
 
 
-@socketio.on('joined', namespace='/chat')
-def joined(_):
-    """Sent by clients when they enter a room.
-    A status message is broadcast to all people in the room."""
-    room = request.args.get('room')
-    name = request.args.get('name')
-    if name is None:
-        name = ''
-    join_room(room)
-    emit('status', {'msg': name + ' has entered the room.'}, room=room)
+def generate_uid() -> str:
+    """generate_uid() function is used to generate a UID. Used for
+    user creation and chat room creation.
+
+    Returns:
+        str: The UID token
+    """
+    return ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(64))
 
 
-@socketio.on('text', namespace='/chat')
-def text(message):
-    """Sent by a client when the user entered a new message.
-    The message is sent to all people in the room."""
-    room = request.args.get('room')
-    name = request.args.get('name')
-    if name is None:
-        name = ''
-    emit('message', {'msg': name + ':' + message['msg']}, room=room)
+@app.route('/new')
+def new_chatroom() -> str:
+    chat_id: str = generate_uid()
+    exec(f"""
+@app.route('/{chat_id}')
+def chat{chat_id}():
+    return '{chat_id}'
+""")
+    return chat_id
 
 
-@socketio.on('left', namespace='/chat')
-def left(_):
-    """Sent by clients when they leave a room.
-    A status message is broadcast to all people in the room."""
-    room = request.args.get('room')
-    name = request.args.get('name')
-    leave_room(room)
-    emit('status', {'msg': name + ' has left the room.'}, room=room)
-
-
-@app.route('/chat')
-def chat():
-    name = request.args.get('name')
-    room = request.args.get('room')
-    return render_template('chat.html', room=room, name=name)
+@app.route('/chat', methods=["POST"])
+def chat() -> str:
+    if 'username' not in flask.session:
+        flask.session['username'] = generate_uid()
+    query: dict = dict(flask.request.form)['query']
+    return flask.jsonify({"response": f'{flask.session["username"]} {query}'})
