@@ -1,1 +1,1 @@
-web: gunicorn secrypto
+web: gunicorn secrypto:__init__
