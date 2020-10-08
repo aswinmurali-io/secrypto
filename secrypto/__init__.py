@@ -5,7 +5,7 @@ applications.
 """
 
 from .globals import app
-from .chat import ChatQueue, generate_uid, new_chatroom, chat
+from .chat import generate_uid, new_chatroom
 
 __version__ = '0.0.1'
 

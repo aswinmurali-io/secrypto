@@ -1,0 +1,23 @@
+
+from sqlalchemy import Table, Column, Integer, String, MetaData
+from flask_sqlalchemy import create_engine
+meta = MetaData()
+
+engine = create_engine('sqlite:///college.db', echo=True)
+class ChatQueue(db.Model):
+    """ChatQueue class contains the table for storing all the chats in that
+    chat room inside a SQL table which can be accessed by both the users to get
+    pending messages.
+
+    Args:
+        db (Model): app's SQLAlchemy model instance.
+
+    Returns:
+        str: The table details
+    """
+    id: str = db.Column(db.Integer, primary_key=True)
+    user_id: str = db.Column(db.String(10), nullable=False)
+    user_msg: str = db.Column(db.String, nullable=False)
+
+    def __repr__(self) -> str:
+        return f'ChatQueue(user_id={self.user_id}, user_msg={self.user_msg}'

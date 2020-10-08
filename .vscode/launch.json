@@ -9,8 +9,8 @@
             "env": {
                 "SECRET_KEY": "testkey",
                 "FLASK_APP": "secrypto",
-                "FLASK_ENV": "development",
-                "FLASK_DEBUG": "1",
+                //"FLASK_ENV": "development",
+                "FLASK_DEBUG": "0",
             },
             "args": [
                 "run",
