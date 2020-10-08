@@ -35,11 +35,9 @@ def new_chatroom() -> str:
     chatid = generate_uid()
     userid = generate_uid()
     return flask.jsonify({
-        "body": {
-            "Chat ID": chatid,
-            "User ID": userid,
-            "Link": f'{BASE_URL}/{chatid}',
-        },
+        "Chat ID": chatid,
+        "User ID": userid,
+        "Link": f'{BASE_URL}/{chatid}',
     })
 
 
