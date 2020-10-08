@@ -37,14 +37,15 @@ def new_chatroom() -> str:
     return flask.jsonify({
         "Chat ID": chatid,
         "User ID": userid,
-        "Link": f'{BASE_URL}/{chatid}',
+        "Link": f'{BASE_URL}/chat',
     })
 
 
-@app.route('/chat', methods=["POST"])
+@app.route('/chat', methods=['POST', 'GET'])
 @cross_origin()
 def chat() -> str:
-    if 'username' not in flask.session:
-        flask.session['username'] = generate_uid()
-    query: dict = dict(flask.request.form)['query']
-    return flask.jsonify({"response": f'{flask.session["username"]} {query}'})
+    return dict(flask.request.form)
+    # if 'username' not in flask.session:
+    #     flask.session['username'] = generate_uid()
+    # query: dict = dict(flask.request.form)['query']
+    # return flask.jsonify({"response": f'{flask.session["username"]} {query}'})
