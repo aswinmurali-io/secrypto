@@ -1,3 +1,12 @@
+"""
+
+id: {
+    chat_id: ...,
+    user_id: ...,
+    message: ...,
+}
+
+"""
 import flask
 import string
 import secrets
@@ -8,7 +17,7 @@ from .globals import app, db
 from flask_cors import cross_origin
 
 # BASE_URL = "https://secrypto.herokuapp.com"
-BASE_URL = 'http://127.0.0.1:5000'
+BASE_URL = 'http://127.0.0.1:5000'  # TODO: CHANGE THIS!
 
 
 def generate_uid() -> str:
@@ -22,25 +31,21 @@ def generate_uid() -> str:
 
 
 @app.route('/new')
-def new_chatroom() -> str:
-    #     exec(f"""
-    # @app.route('/{chat_id}')
-    # def chat{chat_id}():
-    #     chat{chat_id} = Table(
-    #         'chat{chat_id}',
-    #         meta,
-    #         Column('id', Integer, primary_key=True),
-    #         Column('user_id', String),
-    #         Column('user_msg', String),
-    #     )
-    #     return '{chat_id}'
-    # """)
-    chatid = generate_uid()
+def new_chatroom() -> any:
+    chatid = 'chat'  # generate_uid() TODO: CHANGE THIS!
     userid = generate_uid()
+    if not os.path.exists(chatid):
+        os.makedirs(chatid)
+    if not os.path.exists(f'{chatid}/users'):
+        open(f'{chatid}/users', 'w').write(userid)
+    else:
+        open(f'{chatid}/users', 'a').write(f'\n{userid}')
+    if not os.path.exists(f'{chatid}/{userid}.chat_queue'):
+        open(f'{chatid}/{userid}.chat_queue', 'w').write('')
     return flask.jsonify({
         "Chat ID": chatid,
         "User ID": userid,
-        "Link": f'{BASE_URL}/chat',
+        "Link": f'{BASE_URL}/{chatid}',
     })
 
 
@@ -49,15 +54,31 @@ def new_chatroom() -> str:
 def chat() -> str:
     if flask.request.method == 'POST':
         data = dict(flask.request.form)
-        json_file = open(data['Chat ID'], 'w')
-        json_file.write(json.dumps(data))
-        json_file.close()
+        if 'Sender User ID' in data:
+            user_list = open(f'{data["Chat ID"]}/users').read().split('\n')
+            yes = False
+            for user in user_list:
+                if user == data['Sender User ID']:
+                    yes = True
+            if not yes:
+                if not os.path.exists(f'{data["Chat ID"]}/{data["Sender User ID"]}.chat_queue'):
+                    open(f'{data["Chat ID"]}/users', 'a').write(f"\n{data['Sender User ID']}")
+                    open(f'{data["Chat ID"]}/{data["Sender User ID"]}.chat_queue', 'w').write('')
+                user_list = open(f'{data["Chat ID"]}/users').read().split('\n')
+            for user in user_list:
+                if user != data['Sender User ID']:
+                    if not os.path.exists(f'{data["Chat ID"]}/{user}.chat_queue'):
+                        open(f'{data["Chat ID"]}/{user}.chat_queue', 'w').write('')
+                    else:
+                        open(f'{data["Chat ID"]}/{user}.chat_queue', 'a').write(f'\n{json.dumps(data)}')
         return data
     else:
-        chatid = flask.request.args.get('id')
-        if os.path.exists(chatid):
-            json_file = open(chatid)
-            content = json_file.read()
-            json_file.close()
-            return content
-    return '{}'
+        chatid = flask.request.args.get('chatid')
+        userid = flask.request.args.get('userid')
+        if not os.path.exists(chatid):
+            os.makedirs(chatid)
+        if not os.path.exists(f'{chatid}/{userid}.chat_queue'):
+            open(f'{chatid}/{userid}.chat_queue').write('')
+        chat_content = open(f'{chatid}/{userid}.chat_queue').read()
+        open(f'{chatid}/{userid}.chat_queue', 'w').write('')
+    return chat_content

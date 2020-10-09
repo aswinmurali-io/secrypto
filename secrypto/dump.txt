@@ -21,3 +21,12 @@ class ChatQueue(db.Model):
 
     def __repr__(self) -> str:
         return f'ChatQueue(user_id={self.user_id}, user_msg={self.user_msg}'
+        elif "New User" in data:
+            if not os.path.exists(data["Chat ID"]):
+                os.makedirs(data["Chat ID"])
+            if not os.path.exists(f'{data["Chat ID"]}/{data["User ID"]}'):
+                open(f'{data["Chat ID"]}/{data["User ID"]}', 'w').write('')
+
+            user_list = open(f'{data["Chat ID"]}/users', 'a')
+            user_list.write(data['User ID'])
+            user_list.close()
