@@ -4,11 +4,12 @@ for all with APIs for developers to includea chat system in their
 applications.
 """
 
-from .globals import app
-from .chat import generate_uid, new_chatroom
+from .globals import app, db
+from .chat import *
 
 __version__ = '0.0.1'
 
+db.create_all()
 
 @app.route('/')
 def index() -> str:

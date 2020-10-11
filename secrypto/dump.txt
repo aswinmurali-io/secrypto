@@ -30,3 +30,96 @@ class ChatQueue(db.Model):
             user_list = open(f'{data["Chat ID"]}/users', 'a')
             user_list.write(data['User ID'])
             user_list.close()
+
+        return ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(64))
+
+
+
+        
+
+# @app.route('/new')
+# def new_chatroom() -> any:
+#     chatid = generate_uid()  # TODO: CHANGE THIS!
+#     USER = generate_uid()
+#     if not os.path.exists(chatid):
+#         os.makedirs(chatid)
+#     if not os.path.exists(f'{chatid}/users'):
+#         open(f'{chatid}/users', 'w').write(USER)
+#     else:
+#         open(f'{chatid}/users', 'a').write(f'\n{USER}')
+#     if not os.path.exists(f'{chatid}/{USER}.chat_queue'):
+#         open(f'{chatid}/{USER}.chat_queue', 'w').write('')
+#     return flask.jsonify({
+#         "Chat ID": chatid,
+#         "User ID": USER,
+#         "Link": f'{BASE_URL}/{chatid}',
+#     })
+
+# @app.route('/chat', methods=['POST', 'GET'])
+# @cross_origin()
+# def chat() -> str:
+#     if flask.request.method == 'POST':
+#         data = dict(flask.request.form)
+#         if 'Sender User ID' in data:
+#             user_list = open(f'{data["Chat ID"]}/users').read().split('\n')
+#             yes = False
+#             for user in user_list:
+#                 if user == data['Sender User ID']:
+#                     yes = True
+#             if not yes:
+#                 if not os.path.exists(f'{data["Chat ID"]}/{data["Sender User ID"]}.chat_queue'):
+#                     open(f'{data["Chat ID"]}/users', 'a').write(f"\n{data['Sender User ID']}")
+#                     open(f'{data["Chat ID"]}/{data["Sender User ID"]}.chat_queue', 'w').write('')
+#                 user_list = open(f'{data["Chat ID"]}/users').read().split('\n')
+#             for user in user_list:
+#                 if user != data['Sender User ID']:
+#                     if not os.path.exists(f'{data["Chat ID"]}/{user}.chat_queue'):
+#                         open(f'{data["Chat ID"]}/{user}.chat_queue', 'w').write('')
+#                     else:
+#                         open(f'{data["Chat ID"]}/{user}.chat_queue', 'a').write(f'\n{json.dumps(data)}')
+#         return data
+#     else:
+#         chatid = flask.request.args.get('chatid')
+#         USER = flask.request.args.get('USER')
+#         if not os.path.exists(chatid):
+#             os.makedirs(chatid)
+#         if not os.path.exists(f'{chatid}/{USER}.chat_queue'):
+#             open(f'{chatid}/{USER}.chat_queue').write('')
+#         chat_content = open(f'{chatid}/{USER}.chat_queue').read()
+#         open(f'{chatid}/{USER}.chat_queue', 'w').write('')
+#     return chat_content
+
+# @app.route('/<chatid>', methods=['POST', 'GET'])
+# @cross_origin()
+# def chat_session(chatid) -> str:
+#     if flask.request.method == 'POST':
+#         data = dict(flask.request.form)
+#         if chatid != data['Chat ID']:
+#             return ''
+#         if 'Sender User ID' in data:
+#             user_list = open(f'{chatid}/users').read().split('\n')
+#             yes = False
+#             for user in user_list:
+#                 if user == data['Sender User ID']:
+#                     yes = True
+#             if not yes:
+#                 if not os.path.exists(f'{chatid}/{data["Sender User ID"]}.chat_queue'):
+#                     open(f'{chatid}/users', 'a').write(f"\n{data['Sender User ID']}")
+#                     open(f'{chatid}/{data["Sender User ID"]}.chat_queue', 'w').write('')
+#                 user_list = open(f'{chatid}/users').read().split('\n')
+#             for user in user_list:
+#                 if user != data['Sender User ID']:
+#                     if not os.path.exists(f'{chatid}/{user}.chat_queue'):
+#                         open(f'{chatid}/{user}.chat_queue', 'w').write('')
+#                     else:
+#                         open(f'{chatid}/{user}.chat_queue', 'a').write(f'\n{json.dumps(data)}')
+#         return data
+#     else:
+#         USER = flask.request.args.get('USER')
+#         if not os.path.exists(chatid):
+#             os.makedirs(chatid)
+#         if not os.path.exists(f'{chatid}/{USER}.chat_queue'):
+#             open(f'{chatid}/{USER}.chat_queue').write('')
+#         chat_content = open(f'{chatid}/{USER}.chat_queue').read()
+#         open(f'{chatid}/{USER}.chat_queue', 'w').write('')
+#     return chat_content

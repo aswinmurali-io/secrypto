@@ -26,5 +26,19 @@
             "program": "secrypto_app/lib/main.dart",
             "showMemoryUsage": true
         },
+        {
+            "name": "Secrypto Client 2",
+            "type": "dart",
+            "request": "launch",
+            "program": "secrypto_app/lib/main.dart",
+            "showMemoryUsage": true
+        },
+        {
+            "name": "Secrypto Client 3",
+            "type": "dart",
+            "request": "launch",
+            "program": "secrypto_app/lib/main.dart",
+            "showMemoryUsage": true
+        },
     ]
 }

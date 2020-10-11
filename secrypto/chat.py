@@ -1,84 +1,98 @@
-"""
-
-id: {
-    chat_id: ...,
-    user_id: ...,
-    message: ...,
-}
-
-"""
+import types
+import uuid
 import flask
-import string
-import secrets
-import json
-import os
+
+from enum import Enum
+from typing import NewType, Any
 
 from .globals import app, db
-from flask_cors import cross_origin
 
-# BASE_URL = "https://secrypto.herokuapp.com"
-BASE_URL = 'http://127.0.0.1:5000'  # TODO: CHANGE THIS!
+SECRYPTO_ID: types[SECRYPTO_ID] = NewType('SECRYPTO_ID', str)
+ENCRYPTED_MSG: types[ENCRYPTED_MSG] = NewType('ENCRYPTED_MSG', str)
+BASE_URL: str = 'http://127.0.0.1:5000'  # TODO: CHANGE THIS! https://secrypto.herokuapp.com
 
 
-def generate_uid() -> str:
+class IDType(Enum):
+    """The ID Type for the SECRYTO ID. The ID can be a user
+    type or chat type. Used to identify these respectively.
+
+    Examples:
+        IDType.USER
+        IDType.CHAT
+
+    Args:
+        Enum (Enum): Enum datatype class
+    """
+    USER: str = 'user'
+    CHAT: str = 'chat'
+
+
+def generate_uid(prefix: IDType) -> SECRYPTO_ID:
     """generate_uid() function is used to generate a UID. Used for
     user creation and chat room creation.
 
     Returns:
-        str: The UID token
+        SECRYPTO_ID: The UID token in an secrypto styled ID
     """
-    return ''.join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(64))
+    return SECRYPTO_ID(f'{prefix}_{uuid.uuid4().hex}')
+
+
+class ChatQueue(db.Model):
+    """The queue for each secrypto user
+
+    Args:
+        db (Model): The database model
+
+    Returns:
+        str: The chat queue is used
+    """
+    __tablename__: SECRYPTO_ID = SECRYPTO_ID('public_user')
+
+    order_id: db.Integer = db.Column(db.Integer, primary_key=True)
+    sender_user_id: db.String = db.Column(db.String)
+    msg: db.String = db.Column(db.String)
+    time: db.DateTime = db.Column(db.DateTime)
+    chat_id: db.String = db.Column(db.String)
+
+    def __init__(self, userid: SECRYPTO_ID, sender_user_id: SECRYPTO_ID = None, msg: ENCRYPTED_MSG = None, time: str = None, chat_id: SECRYPTO_ID = None) -> None:
+        """Insert a new row in the chat queue. This is where all the pending messages are
+        stored, once received the msg will be deleted from the database. The chat queue
+        class will have table name where each table name is a user id. So each user will have
+        their own chat queue.
+
+        Args:
+            userid (SECRYPTO_ID): The USER ID to where the msg is to be stored.
+            sender_user_id (SECRYPTO_ID, optional): The sender user id from which the msg came from. Defaults to None.
+            msg (ENCRYPTED_MSG, optional): The content of the message (Encryted). Defaults to None.
+            time (str, optional): The time when the message was send to the secrypto server. Defaults to None.
+            chat_id (SECRYPTO_ID, optional): The ID of the chat where the message was send to. Defaults to None.
+        """
+        self.__tablename__ = userid
+
+        self.msg = msg
+        self.time = time
+        self.chat_id = chat_id
+        self.sender_user_id = sender_user_id
+
+    def __repr__(self) -> str:
+        """The class return data.
+
+        Returns:
+            str: This returns the content of the class.
+        """
+        return f'<ChatQueue[table={self.__tablename__}](order_id={self.order_id}, sender_user_id={self.sender_user_id}, msg={self.msg}, time={self.time}, chat_id={self.chat_id})>'
 
 
 @app.route('/new')
-def new_chatroom() -> any:
-    chatid = 'chat'  # generate_uid() TODO: CHANGE THIS!
-    userid = generate_uid()
-    if not os.path.exists(chatid):
-        os.makedirs(chatid)
-    if not os.path.exists(f'{chatid}/users'):
-        open(f'{chatid}/users', 'w').write(userid)
-    else:
-        open(f'{chatid}/users', 'a').write(f'\n{userid}')
-    if not os.path.exists(f'{chatid}/{userid}.chat_queue'):
-        open(f'{chatid}/{userid}.chat_queue', 'w').write('')
-    return flask.jsonify({
-        "Chat ID": chatid,
-        "User ID": userid,
-        "Link": f'{BASE_URL}/{chatid}',
-    })
+def new() -> Any:
+    admin_user_id: SECRYPTO_ID = generate_uid(IDType.USER)
+    chat_id: SECRYPTO_ID = generate_uid(IDType.CHAT)
+    new_chat_queue: ChatQueue = ChatQueue(userid=admin_user_id)
+    db.session.add(new_chat_queue)
+    db.session.commit()
+    return flask.jsonify(admin_user_id=admin_user_id, chat_id=chat_id)
 
 
-@app.route('/chat', methods=['POST', 'GET'])
-@cross_origin()
-def chat() -> str:
-    if flask.request.method == 'POST':
-        data = dict(flask.request.form)
-        if 'Sender User ID' in data:
-            user_list = open(f'{data["Chat ID"]}/users').read().split('\n')
-            yes = False
-            for user in user_list:
-                if user == data['Sender User ID']:
-                    yes = True
-            if not yes:
-                if not os.path.exists(f'{data["Chat ID"]}/{data["Sender User ID"]}.chat_queue'):
-                    open(f'{data["Chat ID"]}/users', 'a').write(f"\n{data['Sender User ID']}")
-                    open(f'{data["Chat ID"]}/{data["Sender User ID"]}.chat_queue', 'w').write('')
-                user_list = open(f'{data["Chat ID"]}/users').read().split('\n')
-            for user in user_list:
-                if user != data['Sender User ID']:
-                    if not os.path.exists(f'{data["Chat ID"]}/{user}.chat_queue'):
-                        open(f'{data["Chat ID"]}/{user}.chat_queue', 'w').write('')
-                    else:
-                        open(f'{data["Chat ID"]}/{user}.chat_queue', 'a').write(f'\n{json.dumps(data)}')
-        return data
-    else:
-        chatid = flask.request.args.get('chatid')
-        userid = flask.request.args.get('userid')
-        if not os.path.exists(chatid):
-            os.makedirs(chatid)
-        if not os.path.exists(f'{chatid}/{userid}.chat_queue'):
-            open(f'{chatid}/{userid}.chat_queue').write('')
-        chat_content = open(f'{chatid}/{userid}.chat_queue').read()
-        open(f'{chatid}/{userid}.chat_queue', 'w').write('')
-    return chat_content
+@app.route('/<chatid>', methods=['POST', 'GET'])
+def chat() -> None:
+    return ''
