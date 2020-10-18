@@ -1,5 +1,6 @@
-
 import 'package:flutter/material.dart';
+
+import '../partials/chat_list_card.dart';
 
 class ContactList extends StatefulWidget {
   ContactList({Key key}) : super(key: key);
@@ -14,18 +15,34 @@ class _ContactListState extends State<ContactList> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Secrypto"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {},
+          ),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            
-          ],
+      body: Scrollbar(
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                for (int i = 0; i < 10; i++) ChatListCard(),
+              ],
+            ),
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        tooltip: 'Increment',
+        tooltip: 'Add Contact',
         child: Icon(Icons.add),
       ),
     );
