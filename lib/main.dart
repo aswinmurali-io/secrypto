@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'routes/contact_list.dart';
 import 'routes/login.dart';
+import 'routes/settings.dart';
 
 void main() => runApp(Secrypto());
 
@@ -17,6 +18,11 @@ class Secrypto extends StatelessWidget {
           textTheme: TextTheme(
             headline1: TextStyle(
               color: Colors.blueGrey,
+            ),
+            headline6: GoogleFonts.openSans(
+              color: Colors.blueGrey,
+              fontWeight: FontWeight.w900,
+              fontSize: 30.0,
             ),
           ),
           floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -34,7 +40,7 @@ class Secrypto extends StatelessWidget {
                 fontWeight: FontWeight.w900,
                 fontSize: 30.0,
               )))),
-      home: ContactList(),
+      home: LoginRoute(),
       debugShowCheckedModeBanner: false,
     );
   }

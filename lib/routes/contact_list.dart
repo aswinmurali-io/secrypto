@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../partials/chat_list_card.dart';
 
-class ContactList extends StatefulWidget {
-  ContactList({Key key}) : super(key: key);
+class ContactListRoute extends StatefulWidget {
+  ContactListRoute({Key key}) : super(key: key);
 
   @override
-  _ContactListState createState() => _ContactListState();
+  _ContactListRouteState createState() => _ContactListRouteState();
 }
 
-class _ContactListState extends State<ContactList> {
+class _ContactListRouteState extends State<ContactListRoute> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

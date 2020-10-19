@@ -9,8 +9,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  uuid: ^2.2.2
   google_fonts: ^1.1.1
+  google_sign_in: ^4.5.5
   cupertino_icons: ^1.0.0
+  flutter_signin_button: ^1.1.0
 
 dev_dependencies:
   flutter_test:
