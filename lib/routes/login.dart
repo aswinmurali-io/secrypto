@@ -100,7 +100,7 @@ class _LoginRouteState extends State<LoginRoute> {
                                       valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                                     ),
                                   ),
-                            color: Colors.amber,
+                            color: Colors.orange[300],
                             onPressed: (_registerButtonStatus)
                                 ? () {
                                     setState(() {

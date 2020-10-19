@@ -40,7 +40,7 @@ class Secrypto extends StatelessWidget {
                 fontWeight: FontWeight.w900,
                 fontSize: 30.0,
               )))),
-      home: LoginRoute(),
+      home: ContactListRoute(),
       debugShowCheckedModeBanner: false,
     );
   }
