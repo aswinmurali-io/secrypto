@@ -37,9 +37,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
-            children: <Widget>[
-              for (int i = 0; i < 10; i++) SettingsCard(),
-            ],
+            children: <Widget>[],
           ),
         ),
       ),

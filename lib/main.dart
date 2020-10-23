@@ -24,6 +24,11 @@ class Secrypto extends StatelessWidget {
               fontWeight: FontWeight.w900,
               fontSize: 30.0,
             ),
+            headline5: GoogleFonts.openSans(
+              color: Colors.blueGrey,
+              fontWeight: FontWeight.w900,
+              fontSize: 40.0,
+            ),
           ),
           floatingActionButtonTheme: FloatingActionButtonThemeData(
             backgroundColor: Colors.blueGrey,

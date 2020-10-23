@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 
 class SettingsCard extends StatefulWidget {
-  SettingsCard({Key key}) : super(key: key);
+  final String name;
+  final Widget settingsOperation;
+  SettingsCard({Key key, this.name, this.settingsOperation});
 
   @override
-  _SettingsCardState createState() => _SettingsCardState();
+  _SettingsCardState createState() => _SettingsCardState(name, settingsOperation);
 }
 
 class _SettingsCardState extends State<SettingsCard> {
+  final String name;
+  final Widget settingsOperation;
+  _SettingsCardState(this.name, this.settingsOperation);
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -26,14 +32,11 @@ class _SettingsCardState extends State<SettingsCard> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Unknown",
+                        Text(name,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                             )),
-                        Switch(
-                          value: true,
-                          onChanged: (value) {},
-                        ),
+                        widget
                       ],
                     ),
                   ),

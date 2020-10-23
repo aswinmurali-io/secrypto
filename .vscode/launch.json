@@ -2,9 +2,43 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "secrypto",
+            "name": "Secrypto Server",
+            "type": "python",
             "request": "launch",
-            "type": "dart"
-        }
+            "module": "flask",
+            "env": {
+                "SECRET_KEY": "testkey",
+                "FLASK_APP": "secrypto",
+                "FLASK_ENV": "development",
+                "FLASK_DEBUG": "1",
+            },
+            "args": [
+                "run",
+                "--no-debugger",
+                "--no-reload"
+            ],
+            "jinja": true
+        },
+        {
+            "name": "Secrypto Client",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "showMemoryUsage": true
+        },
+        {
+            "name": "Secrypto Client 2",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "showMemoryUsage": true
+        },
+        {
+            "name": "Secrypto Client 3",
+            "type": "dart",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "showMemoryUsage": true
+        },
     ]
 }

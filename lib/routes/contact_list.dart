@@ -12,6 +12,7 @@ class ContactListRoute extends StatefulWidget {
 Map<String, List<String>> contact = {
   "Aswin Murali": ["Hi", "10:00AM"],
   "Abhinav Basil Shinow": ["Good", "8:00AM"],
+  "Paimon": ["I am emergency food!", "12:00AM"],
   "Tim Cook": ["I am greedy", "12:00PM"],
   "Rahul Arjun": ["Good to see you", "3:00PM"],
   "Sunder": ["I am google", "5:00PM"],
@@ -50,7 +51,7 @@ class _ContactListRouteState extends State<ContactListRoute> {
                   name: _k[i],
                   lastSendMsg: contact[_k[i]][0],
                   time: contact[_k[i]][1],
-                  profileURL: "https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg",
+                  profileURL: "https://picsum.photos/300/300/?blur",
                 ),
             ]),
           ),

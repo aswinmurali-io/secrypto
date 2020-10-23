@@ -1,4 +1,4 @@
-package com.example.secrypto
+package com.crysalis.secrypto
 
 import io.flutter.embedding.android.FlutterActivity
 

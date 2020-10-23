@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:secrypto/routes/contact_list.dart';
 
 class ChatListCard extends StatefulWidget {
   ChatListCard({Key key, this.name, this.lastSendMsg, this.time, this.profileURL}) : super(key: key);
@@ -61,7 +62,13 @@ class _ChatListCardState extends State<ChatListCard> {
           ],
         ),
       ),
-      onTap: () {},
+      onTap: () => Future.delayed(Duration(milliseconds: 200),).then(
+        (value) => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ContactListRoute(),
+          ),
+        ),
+      ),
     );
   }
 }

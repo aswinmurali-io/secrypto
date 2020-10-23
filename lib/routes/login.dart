@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:secrypto/partials/settings_logic.dart';
 import 'package:uuid/uuid.dart';
-
-var uuid = Uuid();
 
 class LoginRoute extends StatefulWidget {
   LoginRoute({Key key}) : super(key: key);
@@ -16,20 +14,18 @@ Future<String> autoLogin() async {
   return "TOKEN";
 }
 
-// uuid.v5(Uuid.NAMESPACE_URL, 'www.test.com');
-
 class _LoginRouteState extends State<LoginRoute> {
   bool _registerButtonStatus = true;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Secrypto")),
-      body: FutureBuilder<String>(
-          future: autoLogin(),
-          builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-            if (snapshot.hasData) {
-              return Center(
+    return FutureBuilder<String>(
+        future: autoLogin(),
+        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+          if (snapshot.hasData) {
+            return Scaffold(
+              appBar: AppBar(title: Text("Secrypto")),
+              body: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -43,37 +39,18 @@ class _LoginRouteState extends State<LoginRoute> {
                       text: TextSpan(children: [
                         TextSpan(
                             text: "\nSecrypto",
-                            style: TextStyle(
-                              color: Colors.blueGrey[400],
-                              fontWeight: FontWeight.bold,
-                            )),
+                            style: TextStyle(color: Colors.blueGrey[400], fontWeight: FontWeight.bold)),
                         TextSpan(
                             text: " is an end-to-end 🔓 encrypted chat service with",
-                            style: TextStyle(
-                              color: Colors.blueGrey[400],
-                            )),
+                            style: TextStyle(color: Colors.blueGrey[400])),
                         TextSpan(
                             text: " accessiblity",
-                            style: TextStyle(
-                              color: Colors.blueGrey[400],
-                              fontWeight: FontWeight.bold,
-                            )),
-                        TextSpan(
-                            text: " for",
-                            style: TextStyle(
-                              color: Colors.blueGrey[400],
-                            )),
+                            style: TextStyle(color: Colors.blueGrey[400], fontWeight: FontWeight.bold)),
+                        TextSpan(text: " for", style: TextStyle(color: Colors.blueGrey[400])),
                         TextSpan(
                             text: " differentially-abled people",
-                            style: TextStyle(
-                              color: Colors.blueGrey[400],
-                              fontWeight: FontWeight.bold,
-                            )),
-                        TextSpan(
-                            text: ".",
-                            style: TextStyle(
-                              color: Colors.blueGrey[400],
-                            )),
+                            style: TextStyle(color: Colors.blueGrey[400], fontWeight: FontWeight.bold)),
+                        TextSpan(text: ".", style: TextStyle(color: Colors.blueGrey[400])),
                       ]),
                     ),
                     Padding(
@@ -112,14 +89,12 @@ class _LoginRouteState extends State<LoginRoute> {
                         )),
                   ],
                 ),
-              );
-            } else
-              return Center(
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
-                ),
-              );
-          }),
-    );
+              ),
+            );
+          } else
+            return Center(
+              child: Text("Secrypto", style: Theme.of(context).textTheme.headline5),
+            );
+        });
   }
 }
