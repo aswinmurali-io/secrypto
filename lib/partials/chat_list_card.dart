@@ -1,74 +1,78 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:secrypto/routes/contact_list.dart';
 
-class ChatListCard extends StatefulWidget {
-  ChatListCard({Key key, this.name, this.lastSendMsg, this.time, this.profileURL}) : super(key: key);
+import 'auth.dart';
 
+class ChatList extends StatefulWidget {
   final String name;
-  final String lastSendMsg;
   final String time;
   final String profileURL;
+  final String lastSendMsg;
+
+  ChatList({Key key, this.name, this.lastSendMsg, this.time, this.profileURL}) : super(key: key);
 
   @override
-  _ChatListCardState createState() => _ChatListCardState(name, lastSendMsg, time, profileURL);
+  _ChatListState createState() => _ChatListState(name, lastSendMsg, time, profileURL);
 }
 
-class _ChatListCardState extends State<ChatListCard> {
+class _ChatListState extends State<ChatList> {
   final String name;
-  final String lastSendMsg;
   final String time;
   final String profileURL;
+  final String lastSendMsg;
 
-  _ChatListCardState(this.name, this.lastSendMsg, this.time, this.profileURL);
+  _ChatListState(this.name, this.lastSendMsg, this.time, this.profileURL);
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Row(
-          children: [
-            CircleAvatar(
-              radius: 30.0,
-              child: ClipOval(
-                child: (profileURL == null) ? Icon(Icons.portrait_rounded) : Image.network(profileURL),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    final contact = Provider.of<List<Contact>>(context);
+    if (contact == null) return const Text("Loading...");
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: contact.map((Contact user) {
+          return InkWell(
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
                 children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width - 114,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(name ?? "Unknown",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            )),
-                        Text(time ?? "No Time", style: TextStyle(color: Colors.blueGrey)),
-                      ],
+                  CircleAvatar(
+                    radius: 30.0,
+                    child: ClipOval(
+                      child: (profileURL == null) ? Icon(Icons.portrait_rounded) : Image.network(profileURL),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
-                    child: Text(lastSendMsg ?? "Last Sent Message"),
-                  ),
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width - 114,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(user.name, style: TextStyle(fontWeight: FontWeight.bold)),
+                              Text(user.time, style: TextStyle(color: Colors.blueGrey)),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
+                          child: Text(user.lastSendMsg),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
-            )
-          ],
-        ),
-      ),
-      onTap: () => Future.delayed(Duration(milliseconds: 200),).then(
-        (value) => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ContactListRoute(),
-          ),
-        ),
-      ),
-    );
+            ),
+            onTap: () => Future.delayed(Duration(milliseconds: 200)).then(
+              (_) => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => ContactListRoute()),
+              ),
+            ),
+          );
+        }).toList());
   }
 }

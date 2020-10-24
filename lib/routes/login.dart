@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:secrypto/partials/settings_logic.dart';
-import 'package:uuid/uuid.dart';
+import 'package:secrypto/partials/auth.dart';
+
+import 'contact_list.dart';
 
 class LoginRoute extends StatefulWidget {
   LoginRoute({Key key}) : super(key: key);
@@ -83,6 +85,12 @@ class _LoginRouteState extends State<LoginRoute> {
                                     setState(() {
                                       return _registerButtonStatus = !_registerButtonStatus;
                                     });
+                                    Session.auth();
+                                    Future.delayed(Duration(milliseconds: 200)).then(
+                                      (_) => Navigator.of(context).pushReplacement(
+                                        MaterialPageRoute(builder: (context) => ContactListRoute()),
+                                      ),
+                                    );
                                   }
                                 : null,
                           ),
@@ -92,8 +100,13 @@ class _LoginRouteState extends State<LoginRoute> {
               ),
             );
           } else
-            return Center(
-              child: Text("Secrypto", style: Theme.of(context).textTheme.headline5),
+            return Scaffold(
+              body: Center(
+                child: Text(
+                  "Secrypto",
+                  style: Theme.of(context).textTheme.headline5,
+                ),
+              ),
             );
         });
   }
