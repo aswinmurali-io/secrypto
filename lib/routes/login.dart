@@ -1,6 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:secrypto/partials/auth.dart';
+
+import '../partials/auth.dart';
 
 import 'contact_list.dart';
 
@@ -12,6 +15,7 @@ class LoginRoute extends StatefulWidget {
 }
 
 Future<String> autoLogin() async {
+  await Firebase.initializeApp().then((_) => FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError);
   await Future.delayed(Duration(seconds: 2));
   return "TOKEN";
 }
@@ -101,13 +105,9 @@ class _LoginRouteState extends State<LoginRoute> {
             );
           } else
             return Scaffold(
-              body: Center(
-                child: Text(
-                  "Secrypto",
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-              ),
-            );
+                body: Center(
+              child: Text("Secrypto", style: Theme.of(context).textTheme.headline5),
+            ));
         });
   }
 }

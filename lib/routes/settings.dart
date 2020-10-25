@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:secrypto/partials/settings_card.dart';
 
 class SettingsRoute extends StatefulWidget {
   SettingsRoute({Key key}) : super(key: key);

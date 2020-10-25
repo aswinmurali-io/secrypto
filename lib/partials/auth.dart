@@ -5,11 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
-final Uuid uuid = Uuid();
+import 'rooms.dart';
 
+final Uuid uuid = Uuid();
 
 class Session {
   static const UidKey = 'UID';
+
   static Future<String> generateDeviceID() async {
     final String uid = uuid.v4();
     final storage = await SharedPreferences.getInstance();
@@ -17,21 +19,31 @@ class Session {
     return uid;
   }
 
-  static void auth() async {
+  static Future<String> auth() async {
     final storage = await SharedPreferences.getInstance();
     String uid = storage.getString(UidKey);
 
     // Register device-based SecryptoID
-    if (uid == null) {
-      uid = await generateDeviceID();
-    }
+    if (uid == null) uid = await generateDeviceID();
+    return uid;
   }
 
-  static Widget enterRoom() {
-
+  static void enterRoom(String generatedSessionCode) async {
+    
+    // final String uid = storage.getString(UidKey);
+    // List<String> rooms = storage.getStringList(RoomKey);
+    
+    
+    // FirebaseFirestore.instance.collection(RoomKey).doc(generatedSessionCode).set({
+    //   "admins": [uid],
+    //   "moderators": [],
+    //   "users": [uid],
+    // });
+    Rooms.insert(generatedSessionCode, "Untitled", "You just joined!", "", "New");
   }
+
+  
 }
-
 
 @immutable
 abstract class FirestoreDocument {
@@ -64,7 +76,7 @@ class Contact with FirestoreDocument {
   static Future<void> add(
       {@required String name, @required String time, @required String lastSendMsg, @required String profileURL}) async {
     String deviceId = (await SharedPreferences.getInstance()).getString(Session.UidKey);
-    assert (deviceId != null);
+    assert(deviceId != null);
     await collection.doc(deviceId).collection(deviceId).doc(name).set({
       NameKey: name,
       TimeKey: time,
@@ -80,4 +92,3 @@ class Contact with FirestoreDocument {
 
   static Stream<List<Contact>> get all => collection.snapshots().map(contactFromQuery);
 }
-

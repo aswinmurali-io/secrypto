@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:vibrate/vibrate.dart';
 
 import 'custom_textfield.dart';
 
@@ -79,8 +78,4 @@ class SessionJoinDialog {
           );
         });
   }
-}
-
-class SessionAddDialog {
-  
 }
