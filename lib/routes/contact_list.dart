@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:secrypto/partials/add_session.dart';
+import 'package:secrypto/partials/session.dart';
 import 'package:secrypto/partials/rooms.dart';
 import 'package:uuid/uuid.dart';
 
@@ -75,7 +75,8 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
                     _scaffoldKey.currentState.showSnackBar(
                       SnackBar(content: Text("Session created, Link copied into clipboard!")),
                     );
-                    Session.enterRoom(Uuid().v4());
+                    
+                    SessionAddDialog.render(context);
                     setState(() {});
                     Future.delayed(Duration(seconds: 2), () {
                       joinAnimation.reverse();

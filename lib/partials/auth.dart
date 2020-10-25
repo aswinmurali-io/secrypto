@@ -28,21 +28,19 @@ class Session {
     return uid;
   }
 
-  static void enterRoom(String generatedSessionCode) async {
-    
+  static void enterRoom(
+      {String generatedSessionCode, String roomName, String lastSendMsg, String profileUrl, String time}) async {
     // final String uid = storage.getString(UidKey);
     // List<String> rooms = storage.getStringList(RoomKey);
-    
-    
+
     // FirebaseFirestore.instance.collection(RoomKey).doc(generatedSessionCode).set({
     //   "admins": [uid],
     //   "moderators": [],
     //   "users": [uid],
     // });
-    Rooms.insert(generatedSessionCode, "Untitled", "You just joined!", "", "New");
+    Rooms.insert(generatedSessionCode, roomName ?? "Untitled", lastSendMsg ?? "You just joined!", profileUrl ?? "",
+        time ?? "New");
   }
-
-  
 }
 
 @immutable
