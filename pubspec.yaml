@@ -18,6 +18,7 @@ dependencies:
   provider: ^4.3.2+2
   vibrate:
   flutter_statusbarcolor: ^0.2.3
+  bubble: 
 
 dev_dependencies:
   flutter_test:

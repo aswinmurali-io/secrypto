@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:secrypto/routes/login.dart';
 
+import 'routes/chat_windows.dart';
+
 void main() => runApp(Secrypto());
 
 class Secrypto extends StatelessWidget {
@@ -48,7 +50,7 @@ class Secrypto extends StatelessWidget {
               statusBarColor: Colors.blueGrey,
               statusBarBrightness: Brightness.light,
               statusBarIconBrightness: Brightness.light),
-          child: LoginRoute()),
+          child: ChatWindow()),
       debugShowCheckedModeBanner: false,
     );
   }

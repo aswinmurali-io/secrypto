@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:secrypto/partials/session.dart';
 import 'package:secrypto/partials/rooms.dart';
-import 'package:uuid/uuid.dart';
 
-import '../partials/auth.dart';
 import '../partials/chat_list_card.dart';
 
 class ContactListRoute extends StatefulWidget {
