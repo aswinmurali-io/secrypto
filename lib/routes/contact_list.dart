@@ -3,6 +3,7 @@ import 'package:secrypto/partials/session.dart';
 import 'package:secrypto/partials/rooms.dart';
 
 import '../partials/chat_list_card.dart';
+import 'settings.dart';
 
 class ContactListRoute extends StatefulWidget {
   ContactListRoute({Key key}) : super(key: key);
@@ -34,8 +35,16 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
         appBar: AppBar(
           title: Text("Secrypto"),
           actions: [
-            IconButton(icon: Icon(Icons.search), onPressed: () {}),
-            IconButton(icon: Icon(Icons.settings), onPressed: () {}),
+            // IconButton(icon: Icon(Icons.search), onPressed: () {}),
+            IconButton(
+                icon: Icon(Icons.settings),
+                onPressed: () {
+                  Future.delayed(Duration(milliseconds: 100), () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => SettingsRoute(),
+                    ));
+                  });
+                }),
           ],
         ),
         body: Scrollbar(

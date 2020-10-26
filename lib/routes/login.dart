@@ -38,7 +38,9 @@ class _LoginRouteState extends State<LoginRoute> {
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
-              appBar: AppBar(title: Text("Secrypto")),
+              appBar: AppBar(
+                title: Text("Secrypto"),
+              ),
               body: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
