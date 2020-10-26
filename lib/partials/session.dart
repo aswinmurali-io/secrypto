@@ -104,6 +104,7 @@ class SessionAddDialog {
   }
 
   static Future<void> render(BuildContext context) {
+    sessionNameController.text = '';
     sessionCodeController.text = Uuid().v4();
     return showGeneralDialog<void>(
         context: context,

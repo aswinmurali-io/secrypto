@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:secrypto/routes/chat_windows.dart';
-import 'package:secrypto/routes/contact_list.dart';
-
 
 class ChatList extends StatefulWidget {
   final String name;
@@ -31,11 +29,10 @@ class _ChatListState extends State<ChatList> {
         child: Row(
           children: [
             CircleAvatar(
-              radius: 30.0,
-              child: ClipOval(
-                child: (profileURL == null) ? Icon(Icons.portrait_rounded) : Image.network(profileURL),
-              ),
-            ),
+                radius: 30.0,
+                child: ClipOval(
+                  child: (profileURL == null) ? Icon(Icons.portrait_rounded) : Image.network(profileURL),
+                )),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Column(
@@ -43,18 +40,12 @@ class _ChatListState extends State<ChatList> {
                 children: [
                   SizedBox(
                     width: MediaQuery.of(context).size.width - 114,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
-                        Text(time, style: TextStyle(color: Colors.blueGrey)),
-                      ],
-                    ),
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                      Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
+                      Text(time, style: TextStyle(color: Colors.blueGrey)),
+                    ]),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 6, 0, 0),
-                    child: Text(lastSendMsg),
-                  ),
+                  Padding(padding: const EdgeInsets.fromLTRB(0, 6, 0, 0), child: Text(lastSendMsg)),
                 ],
               ),
             )

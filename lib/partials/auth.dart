@@ -28,6 +28,13 @@ class Session {
     return uid;
   }
 
+
+  static Future<String> checkAuth() async {
+    final storage = await SharedPreferences.getInstance();
+    String uid = storage.getString(UidKey);
+    return uid;
+  }
+
   static void enterRoom(
       {String generatedSessionCode, String roomName, String lastSendMsg, String profileUrl, String time}) async {
     // final String uid = storage.getString(UidKey);

@@ -68,13 +68,12 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
                 padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                 child: FloatingActionButton.extended(
                   heroTag: 'Add Session',
-                  onPressed: () {
+                  onPressed: () async {
                     joinAnimation.forward();
                     _scaffoldKey.currentState.showSnackBar(
                       SnackBar(content: Text("Session created, Link copied into clipboard!")),
                     );
-                    
-                    SessionAddDialog.render(context);
+                    await SessionAddDialog.render(context);
                     setState(() {});
                     Future.delayed(Duration(seconds: 2), () {
                       joinAnimation.reverse();

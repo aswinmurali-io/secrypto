@@ -14,7 +14,15 @@ class LoginRoute extends StatefulWidget {
   _LoginRouteState createState() => _LoginRouteState();
 }
 
-Future<String> autoLogin() async {
+Future<String> autoLogin(BuildContext context) async {
+  if (Session.checkAuth() != null)
+    Future.delayed(Duration.zero, () {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => ContactListRoute(),
+        ),
+      );
+    });
   await Firebase.initializeApp().then((_) => FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError);
   await Future.delayed(Duration(seconds: 2));
   return "TOKEN";
@@ -26,9 +34,9 @@ class _LoginRouteState extends State<LoginRoute> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String>(
-        future: autoLogin(),
+        future: autoLogin(context),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          if (snapshot.hasData) {
+          if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
             return Scaffold(
               appBar: AppBar(title: Text("Secrypto")),
               body: Center(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:secrypto/routes/settings.dart';
 
 import 'routes/login.dart';
 import 'routes/chat_windows.dart';

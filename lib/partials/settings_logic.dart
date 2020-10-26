@@ -1,18 +1,29 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
 class Settings {
-  static Map<String, Object> _config = {
-    // true, false, auto (system-based)
-    "Dark Mode": "false",
-    "Notification": true,
+  static final storage = SharedPreferences.getInstance();
 
-    "Storage Usage": {
-      "MB Send"
-    }
-  
-  };
+  static void enableNarration(bool status) async {
+    (await storage).setBool("narration", status ?? false);
+  }
 
-  
+  static void enableMorseCode(bool status) async {
+    (await storage).setBool("morseCode", status ?? false);
+  }
 
-  static Map<String, String> getConfig() {
-    return _config;
+  static void enableReducedNetorkUsage(bool status) async {
+    (await storage).setBool("reducedNetwork", status ?? false);
+  }
+
+  static Future<bool> shouldNarrate() async {
+    return (await storage).getBool("narration");
+  }
+
+  static Future<bool> shouldMorseCode() async {
+    return (await storage).getBool("morseCode");
+  }
+
+  static Future<bool> shouldReducedNetorkUsage() async {
+    return (await storage).getBool("reducedNetwork");
   }
 }
