@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
-import 'package:secrypto/partials/custom_textfield.dart';
-import 'package:secrypto/partials/msg_bubble.dart';
+
+import '../partials/custom_textfield.dart';
+import '../partials/msg_bubble.dart';
 
 class ChatWindow extends StatefulWidget {
   ChatWindow({Key key}) : super(key: key);
@@ -46,12 +46,7 @@ class _ChatWindowState extends State<ChatWindow> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(children: [
-                      for (int i = 0; i < 5; i++)
-                        SecryptoChatBubble(
-                          msg: "Hi",
-                          isReceiver: true,
-                          isNarrated: false,
-                        ),
+                      for (int i = 0; i < 5; i++) SecryptoChatBubble(msg: "Hi", isReceiver: true, isNarrated: true),
                     ]),
                   ),
                 ),

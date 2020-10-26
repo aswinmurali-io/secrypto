@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:secrypto/routes/chat_windows.dart';
 import 'package:secrypto/routes/contact_list.dart';
 
 
@@ -62,7 +63,7 @@ class _ChatListState extends State<ChatList> {
       ),
       onTap: () => Future.delayed(Duration(milliseconds: 200)).then(
         (_) => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ContactListRoute(),
+          builder: (context) => ChatWindow(),
         )),
       ),
     );

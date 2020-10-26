@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:secrypto/routes/login.dart';
 
+import 'routes/login.dart';
 import 'routes/chat_windows.dart';
 
 void main() => runApp(Secrypto());
@@ -31,7 +31,6 @@ class Secrypto extends StatelessWidget {
               )),
           floatingActionButtonTheme: FloatingActionButtonThemeData(
             backgroundColor: Colors.blueGrey,
-            
           ),
           appBarTheme: AppBarTheme(
               iconTheme: IconThemeData(
@@ -46,11 +45,12 @@ class Secrypto extends StatelessWidget {
                 fontSize: 30.0,
               )))),
       home: AnnotatedRegion(
-          value: SystemUiOverlayStyle(
-              statusBarColor: Colors.blueGrey,
-              statusBarBrightness: Brightness.light,
-              statusBarIconBrightness: Brightness.light),
-          child: ChatWindow()),
+        value: SystemUiOverlayStyle(
+            statusBarColor: Colors.blueGrey,
+            statusBarBrightness: Brightness.light,
+            statusBarIconBrightness: Brightness.light),
+        child: LoginRoute(),
+      ),
       debugShowCheckedModeBanner: false,
     );
   }
