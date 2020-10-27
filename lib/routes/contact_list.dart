@@ -71,7 +71,10 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
           children: [
             FloatingActionButton.extended(
               heroTag: 'Join Session',
-              onPressed: () => SessionJoinDialog.render(context),
+              onPressed: () async {
+                await SessionJoinDialog.render(context);
+                setState(() {});
+              },
               tooltip: 'Join a session to connect with people.',
               icon: Icon(Icons.connect_without_contact),
               label: Text("Join"),

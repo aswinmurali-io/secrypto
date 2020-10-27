@@ -10,10 +10,12 @@ import 'settings_logic.dart';
 class SessionJoinDialog {
   static bool connectPressed = false;
   static final sessionCodeInputController = TextEditingController();
+  static final sessionNameController = TextEditingController();
 
   static void connectSession(BuildContext context, setState) {
     setState(() => connectPressed = true);
-
+    if (sessionCodeInputController.text == '') sessionNameController.text = 'Untitled';
+    Session.enterRoom(generatedSessionCode: Uuid().v4(), roomName: sessionNameController.text);
     Future.delayed(Duration(seconds: 1), () {
       setState(() => connectPressed = false);
       Navigator.of(context).pop();
@@ -23,7 +25,7 @@ class SessionJoinDialog {
   static void pasteSession(BuildContext context, setState) async {
     ClipboardData data = await Clipboard.getData('text/plain');
     sessionCodeInputController.text = data.text;
-    connectSession(context, setState);
+    if (sessionCodeInputController.text != '') connectSession(context, setState);
   }
 
   static Future<void> render(BuildContext context) async {
@@ -45,6 +47,13 @@ class SessionJoinDialog {
                         children: <Widget>[
                           const Text(
                               'Session code is how you can connect with other people to chat. Secrypto does not ask your phone number.'),
+                          Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
+                              child: SecryptoTextField(
+                                  hintText: "Name",
+                                  obscureText: false,
+                                  prefixIconData: Icons.person,
+                                  controller: sessionNameController)),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
                             child: SecryptoTextField(

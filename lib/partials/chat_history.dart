@@ -9,7 +9,7 @@ class ChatHistory {
 
   static void init() async {
     _chats.clear();
-    _msgCount = (await storage).getInt("msgCount");
+    _msgCount = (await storage).getInt("msgCount") ?? 0;
   }
 
   static Future<Map<int, QueryDocumentSnapshot>> syncChatHistory(String roomId) async {
@@ -27,7 +27,7 @@ class ChatHistory {
         "roomId": roomId,
       }
     });
-    (await storage).setInt("msgCount", _msgCount);
+    (await storage).setInt("msgCount", _msgCount ?? 0);
     final uid = (await storage).getString("UID");
     firebase.collection(roomId).doc(_msgCount.toString()).set({"msg": msg, "userId": uid});
   }
