@@ -37,7 +37,6 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
         appBar: AppBar(
           title: Text("Secrypto"),
           actions: [
-            // IconButton(icon: Icon(Icons.search), onPressed: () {}),
             IconButton(
                 icon: Icon(Icons.settings),
                 onPressed: () async {
@@ -59,6 +58,7 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
                   children: [
                     for (int i = 0; i < rooms.length; i++)
                       ChatList(
+                          roomId: roomIds[i],
                           name: rooms[roomIds[i]]['roomName'],
                           lastSendMsg: rooms[roomIds[i]]['lastSendMsg'],
                           time: rooms[roomIds[i]]['time'],

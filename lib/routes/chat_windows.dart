@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:secrypto/partials/auth.dart';
 import 'package:secrypto/partials/chat_history.dart';
 
 import 'package:intl/intl.dart';
@@ -9,18 +10,42 @@ import '../partials/custom_textfield.dart';
 import '../partials/msg_bubble.dart';
 
 class ChatWindow extends StatefulWidget {
-  ChatWindow({Key key}) : super(key: key);
+  final String roomId;
+  final String roomName;
+  ChatWindow({Key key, this.roomId, this.roomName}) : super(key: key);
 
   @override
-  _ChatWindowState createState() => _ChatWindowState();
+  _ChatWindowState createState() => _ChatWindowState(roomId, roomName);
 }
 
 class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateMixin {
   final sendMsgInput = TextEditingController();
+  final String roomId;
+  final String roomName;
+
+  _ChatWindowState(this.roomId, this.roomName);
+
+  Map<int, Map<String, Object>> chatHistory = {};
+
+  void initAsync() async {
+    (await ChatHistory.syncChatHistory(roomId)).forEach((key, value) {
+      chatHistory.addAll({
+        key: value.data(),
+      });
+    });
+    if (this.mounted) setState(() {});
+  }
+
+  @override
+  void initState() {
+    ChatHistory.init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final chatHistory = ChatHistory.getChatHistory();
+    chatHistory = ChatHistory.getChatHistory();
+    initAsync();
     final chatHistoryKeys = chatHistory.keys.toList();
     String buffer;
 
@@ -41,7 +66,10 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
                         'https://images-ext-1.discordapp.net/external/D4rWYQqsn8UnHC5u_rUDzsrKAkAl64FlPW8aqdPzLA0/%3Fixlib%3Drb-1.2.1%26auto%3Dformat%26fit%3Dcrop%26w%3D500%26q%3D60/https/images.unsplash.com/photo-1498837167922-ddd27525d352'),
                   )),
                   radius: 20.0),
-              Padding(padding: const EdgeInsets.fromLTRB(10, 0, 0, 0), child: Text("Aswin")),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                child: Text(roomName ?? 'Chat'),
+              ),
             ],
           ),
           actions: [],
@@ -64,11 +92,16 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
                         for (int chatId in chatHistoryKeys)
                           SecryptoChatBubble(
                             msg: (() {
-                              final msg = chatHistory[chatId]["msg"];
+                              final msg = chatHistory[chatId]["msg"] ?? '';
                               buffer = msg;
                               return msg;
                             }()),
-                            isReceiver: chatHistory[chatId]["isReceiver"],
+                            isReceiver: (() {
+                              if (chatHistory[chatId]["userId"] == Session.auth())
+                                return true;
+                              else if (chatHistory[chatId]["userId"] != Session.auth()) return false;
+                              return chatHistory[chatId]["isReceiver"] ?? false;
+                            }()),
                           ),
                       ]),
                     ),
@@ -99,7 +132,7 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
                                       if (await Settings.shouldNarrate()) flutterTts.speak(sendMsgInput.text);
                                       buffer = sendMsgInput.text;
                                       setState(() {
-                                        ChatHistory.putMsg(sendMsgInput.text, formatted, false, "0");
+                                        ChatHistory.putMsg(sendMsgInput.text, formatted, false, roomId);
                                       });
                                       sendMsgInput.text = '';
                                     } else {

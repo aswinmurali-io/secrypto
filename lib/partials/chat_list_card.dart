@@ -9,11 +9,12 @@ class ChatList extends StatefulWidget {
   final String time;
   final String profileURL;
   final String lastSendMsg;
+  final String roomId;
 
-  ChatList({Key key, this.name, this.lastSendMsg, this.time, this.profileURL}) : super(key: key);
+  ChatList({Key key, this.name, this.lastSendMsg, this.time, this.profileURL, this.roomId}) : super(key: key);
 
   @override
-  _ChatListState createState() => _ChatListState(name, lastSendMsg, time, profileURL);
+  _ChatListState createState() => _ChatListState(name, lastSendMsg, time, profileURL, roomId);
 }
 
 class _ChatListState extends State<ChatList> {
@@ -21,8 +22,9 @@ class _ChatListState extends State<ChatList> {
   final String time;
   final String profileURL;
   final String lastSendMsg;
+  final String roomId;
 
-  _ChatListState(this.name, this.lastSendMsg, this.time, this.profileURL);
+  _ChatListState(this.name, this.lastSendMsg, this.time, this.profileURL, this.roomId);
 
   @override
   Widget build(BuildContext context) {
@@ -58,10 +60,10 @@ class _ChatListState extends State<ChatList> {
       onTap: () async {
         if (await Settings.shouldNarrate()) flutterTts.speak(name);
         return Future.delayed(Duration(milliseconds: 200)).then(
-        (_) => Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => ChatWindow(),
-        )),
-      );
+          (_) => Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => ChatWindow(roomId: roomId, roomName: name),
+          )),
+        );
       },
     );
   }

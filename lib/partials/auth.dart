@@ -28,7 +28,6 @@ class Session {
     return uid;
   }
 
-
   static Future<String> checkAuth() async {
     final storage = await SharedPreferences.getInstance();
     String uid = storage.getString(UidKey);
@@ -37,14 +36,6 @@ class Session {
 
   static void enterRoom(
       {String generatedSessionCode, String roomName, String lastSendMsg, String profileUrl, String time}) async {
-    // final String uid = storage.getString(UidKey);
-    // List<String> rooms = storage.getStringList(RoomKey);
-
-    // FirebaseFirestore.instance.collection(RoomKey).doc(generatedSessionCode).set({
-    //   "admins": [uid],
-    //   "moderators": [],
-    //   "users": [uid],
-    // });
     Rooms.insert(generatedSessionCode, roomName ?? "Untitled", lastSendMsg ?? "You just joined!", profileUrl ?? "",
         time ?? "New");
   }
