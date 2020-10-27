@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'msg_bubble.dart';
+import 'settings_logic.dart';
+
 class SecryptoTextField extends StatelessWidget {
   final String hintText;
   final IconData prefixIconData;
@@ -30,6 +33,9 @@ class SecryptoTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       child: TextField(
+        onTap: () async {
+          if (await Settings.shouldNarrate()) flutterTts.speak("Textbox selected!");
+        },
         controller: controller,
         style: TextStyle(
           color: Colors.blueGrey,

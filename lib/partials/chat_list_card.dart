@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:secrypto/routes/chat_windows.dart';
 
+import 'msg_bubble.dart';
+import 'settings_logic.dart';
+
 class ChatList extends StatefulWidget {
   final String name;
   final String time;
@@ -52,11 +55,14 @@ class _ChatListState extends State<ChatList> {
           ],
         ),
       ),
-      onTap: () => Future.delayed(Duration(milliseconds: 200)).then(
+      onTap: () async {
+        if (await Settings.shouldNarrate()) flutterTts.speak(name);
+        return Future.delayed(Duration(milliseconds: 200)).then(
         (_) => Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => ChatWindow(),
         )),
-      ),
+      );
+      },
     );
   }
 }

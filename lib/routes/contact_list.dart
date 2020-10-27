@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:secrypto/partials/msg_bubble.dart';
 import 'package:secrypto/partials/session.dart';
 import 'package:secrypto/partials/rooms.dart';
+import 'package:secrypto/partials/settings_logic.dart';
 
 import '../partials/chat_list_card.dart';
 import 'settings.dart';
@@ -38,7 +40,8 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
             // IconButton(icon: Icon(Icons.search), onPressed: () {}),
             IconButton(
                 icon: Icon(Icons.settings),
-                onPressed: () {
+                onPressed: () async {
+                  if (await Settings.shouldNarrate()) flutterTts.speak("Opened Settings");
                   Future.delayed(Duration(milliseconds: 100), () {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => SettingsRoute(),
@@ -82,6 +85,7 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
                     _scaffoldKey.currentState.showSnackBar(
                       SnackBar(content: Text("Session created, Link copied into clipboard!")),
                     );
+                    if (await Settings.shouldNarrate()) flutterTts.speak("Create, If your disabled person, Ask help.");
                     await SessionAddDialog.render(context);
                     setState(() {});
                     Future.delayed(Duration(seconds: 2), () {

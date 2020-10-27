@@ -4,6 +4,8 @@ import 'package:secrypto/partials/auth.dart';
 import 'package:uuid/uuid.dart';
 
 import 'custom_textfield.dart';
+import 'msg_bubble.dart';
+import 'settings_logic.dart';
 
 class SessionJoinDialog {
   static bool connectPressed = false;
@@ -24,7 +26,8 @@ class SessionJoinDialog {
     connectSession(context, setState);
   }
 
-  static Future<void> render(BuildContext context) {
+  static Future<void> render(BuildContext context) async {
+    if (await Settings.shouldNarrate()) flutterTts.speak("Join, If your disabled person, Ask help.");
     return showGeneralDialog<void>(
         context: context,
         pageBuilder: (_, __, ___) => null,
