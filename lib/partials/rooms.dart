@@ -40,7 +40,7 @@ class Rooms {
 
   static void load() async {
     final storage = await SharedPreferences.getInstance();
-    final Map roomStorage = jsonDecode(storage.getString(storageKey));
+    final Map roomStorage = jsonDecode(storage.getString(storageKey) ?? '{}');
     Map.castFrom(roomStorage).forEach((key, value) {
       _rooms.addAll({key: Map<String, String>.from(value)});
     });

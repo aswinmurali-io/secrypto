@@ -16,14 +16,14 @@ class Settings {
   }
 
   static Future<bool> shouldNarrate() async {
-    return (await storage).getBool("narration");
+    return (await storage).getBool("narration") ?? false;
   }
 
   static Future<bool> shouldMorseCode() async {
-    return (await storage).getBool("morseCode");
+    return (await storage).getBool("morseCode") ?? false;
   }
 
   static Future<bool> shouldReducedNetorkUsage() async {
-    return (await storage).getBool("reducedNetwork");
+    return (await storage).getBool("reducedNetwork") ?? false;
   }
 }
