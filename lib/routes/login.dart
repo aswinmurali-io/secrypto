@@ -15,7 +15,7 @@ class LoginRoute extends StatefulWidget {
 }
 
 Future<String> autoLogin(BuildContext context) async {
-  if (Session.checkAuth() != null)
+  if (await Session.checkAuth() != null)
     Future.delayed(Duration.zero, () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(

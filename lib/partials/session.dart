@@ -15,7 +15,7 @@ class SessionJoinDialog {
   static void connectSession(BuildContext context, setState) {
     setState(() => connectPressed = true);
     if (sessionCodeInputController.text == '') sessionNameController.text = 'Untitled';
-    Session.enterRoom(generatedSessionCode: Uuid().v4(), roomName: sessionNameController.text);
+    Session.enterRoom(generatedSessionCode: sessionCodeInputController.text, roomName: sessionNameController.text);
     Future.delayed(Duration(seconds: 1), () {
       setState(() => connectPressed = false);
       Navigator.of(context).pop();
@@ -68,12 +68,12 @@ class SessionJoinDialog {
                       ),
                     ),
                     actions: <Widget>[
-                      if (!connectPressed)
-                        TextButton.icon(
-                          label: Text('QR Code'),
-                          icon: Icon(Icons.qr_code),
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
+                      // if (!connectPressed)
+                      //   TextButton.icon(
+                      //     label: Text('QR Code'),
+                      //     icon: Icon(Icons.qr_code),
+                      //     onPressed: () => Navigator.of(context).pop(),
+                      //   ),
                       TextButton.icon(
                         label:
                             (connectPressed) ? Text('Cancel', style: TextStyle(color: Colors.black38)) : Text('Cancel'),
@@ -158,10 +158,10 @@ class SessionAddDialog {
                       ),
                     ),
                     actions: <Widget>[
-                      TextButton.icon(
-                          label: Text('Make QR'),
-                          icon: Icon(Icons.qr_code),
-                          onPressed: () => Navigator.of(context).pop()),
+                      // TextButton.icon(
+                      //     label: Text('Make QR'),
+                      //     icon: Icon(Icons.qr_code),
+                      //     onPressed: () => Navigator.of(context).pop()),
                       TextButton.icon(
                           label: Text('Cancel'),
                           icon: Icon(Icons.cancel),

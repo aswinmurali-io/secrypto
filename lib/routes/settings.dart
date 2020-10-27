@@ -49,7 +49,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 15, 0, 25),
                   child: ListTile(
-                      title: Text("Person Name"),
+                      title: Text("Aswin"),
                       leading: CircleAvatar(
                         radius: 40.0,
                         child: ClipOval(
