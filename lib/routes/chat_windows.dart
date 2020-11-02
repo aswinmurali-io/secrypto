@@ -1,6 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:secrypto/partials/widgets/msg_bubble.dart';
 
 import '../globals.dart';
 import '../partials/chat_history.dart';
@@ -23,32 +24,13 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
 
   _ChatWindowState(this.roomId, this.roomName);
 
-  Map<int, Map<String, Object>> chatHistory = {};
-
-  void initAsync() async {
-    (await ChatHistory.syncChatHistory(roomId)).forEach((key, value) {
-      chatHistory.addAll({
-        key: value.data(),
-      });
-    });
-    if (this.mounted) setState(() {});
-  }
-
-  @override
-  void initState() {
-    ChatHistory.init();
-    super.initState();
-  }
+  //String buffer;
 
   @override
   Widget build(BuildContext context) {
-    chatHistory = ChatHistory.getChatHistory();
-    // final chatHistoryKeys = chatHistory.keys.toList();
-    String buffer;
-
     return WillPopScope(
       onWillPop: () async {
-        if (await Settings.shouldNarrate()) tTs.speak("Back to contacts");
+        if (await SecryptoSettings.shouldNarrate()) tTs.speak("Back to contacts");
         return true;
       },
       child: Scaffold(
@@ -84,24 +66,20 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
                     physics: const BouncingScrollPhysics(),
                     reverse: true,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(children: [
-                        // for (int chatId in chatHistoryKeys)
-                        //   SecryptoChatBubble(
-                        //     msg: (() {
-                        //       final msg = chatHistory[chatId]["msg"] ?? '';
-                        //       buffer = msg;
-                        //       return msg;
-                        //     }()),
-                        //     isReceiver: (() {
-                        //       if (chatHistory[chatId]["userId"] == Session.auth())
-                        //         return true;
-                        //       else if (chatHistory[chatId]["userId"] != Session.auth()) return false;
-                        //       return chatHistory[chatId]["isReceiver"] ?? false;
-                        //     }()),
-                        //   ),
-                      ]),
-                    ),
+                        padding: const EdgeInsets.all(8.0),
+                        child: StreamBuilder<QuerySnapshot>(
+                            stream: ChatHistory.msg(roomId),
+                            builder: (context, snapshot) {
+                              if (snapshot.data == null) return LinearProgressIndicator();
+                              return Column(
+                                children: snapshot.data.docs.map((data) {
+                                  return SecryptoChatBubble(
+                                    msg: data['msg'],
+                                    isReceiver: data['userId'] != auth.currentUser.uid,
+                                  );
+                                }).toList(),
+                              );
+                            })),
                   ),
                 ),
               ),
@@ -123,17 +101,9 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
                               child: RawMaterialButton(
                                   onPressed: () async {
                                     if (sendMsgInput.text != '' || sendMsgInput.text == ' ') {
-                                      final DateTime now = DateTime.now();
-                                      final DateFormat formatter = DateFormat('yyyy-MM-dd');
-                                      final String formatted = formatter.format(now);
-                                      if (await Settings.shouldNarrate()) tTs.speak(sendMsgInput.text);
-                                      buffer = sendMsgInput.text;
-                                      setState(() {
-                                        ChatHistory.putMsg(sendMsgInput.text, formatted, false, roomId);
-                                      });
+                                      ChatHistory.send(sendMsgInput.text, roomId);
+                                      setState(() => null);
                                       sendMsgInput.text = '';
-                                    } else {
-                                      if (await Settings.shouldNarrate()) tTs.speak(buffer ?? "Nothing");
                                     }
                                   },
                                   elevation: 2.0,

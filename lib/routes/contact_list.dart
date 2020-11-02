@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+
 import '../dialog/session.dart';
+import '../globals.dart';
+
+import '../partials/chat_list_card.dart';
 import '../partials/rooms.dart';
 import '../partials/settings.dart';
 
-import '../globals.dart';
-import '../partials/chat_list_card.dart';
-import 'settings.dart';
+import '../routes/settings.dart';
 
 class ContactListRoute extends StatefulWidget {
   ContactListRoute({Key key}) : super(key: key);
@@ -21,17 +23,15 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Rooms.load();
-      setState(() => rooms = Rooms.get());
-    });
+    Rooms.load();
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() => rooms = Rooms.rooms));
     joinAnimation = AnimationController(value: 0.0, vsync: this, duration: Duration(milliseconds: 200));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final roomIds = rooms.keys.toList();
+    final roomIds = Rooms.rooms.keys.toList();
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -40,7 +40,7 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
             IconButton(
                 icon: Icon(Icons.settings),
                 onPressed: () async {
-                  if (await Settings.shouldNarrate()) tTs.speak("Opened Settings");
+                  if (await SecryptoSettings.shouldNarrate()) tTs.speak("Opened Settings");
                   Future.delayed(Duration(milliseconds: 100), () {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => SettingsRoute(),
@@ -56,13 +56,14 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                 child: Column(
                   children: [
-                    for (int i = 0; i < rooms.length; i++)
+                    for (int i = 0; i < Rooms.rooms.length; i++)
                       ChatList(
-                          roomId: roomIds[i],
-                          name: rooms[roomIds[i]]['roomName'],
-                          lastSendMsg: rooms[roomIds[i]]['lastSendMsg'],
-                          time: rooms[roomIds[i]]['time'],
-                          profileURL: rooms[roomIds[i]]['profileURL']),
+                        roomId: roomIds[i],
+                        name: Rooms.rooms[roomIds[i]]['roomName'],
+                        lastSendMsg: '', // rooms[roomIds[i]]['lastSendMsg'],
+                        time: '', //rooms[roomIds[i]]['time'],
+                        profileURL: null,
+                      ) //rooms[roomIds[i]]['profileURL']),
                   ],
                 )),
           ),
@@ -88,7 +89,7 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
                     _scaffoldKey.currentState.showSnackBar(
                       SnackBar(content: Text("Session created, Link copied into clipboard!")),
                     );
-                    if (await Settings.shouldNarrate()) tTs.speak("Create, If your disabled person, Ask help.");
+                    if (await SecryptoSettings.shouldNarrate()) tTs.speak("Create, If your disabled person, Ask help.");
                     await SessionAddDialog.render(context);
                     setState(() {});
                     Future.delayed(Duration(seconds: 2), () {

@@ -34,7 +34,7 @@ class SecryptoTextField extends StatelessWidget {
     return SizedBox(
       child: TextField(
         onTap: () async {
-          if (await Settings.shouldNarrate()) tTs.speak("Textbox selected!");
+          if (await SecryptoSettings.shouldNarrate()) tTs.speak("Textbox selected!");
         },
         controller: controller,
         style: TextStyle(

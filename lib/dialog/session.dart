@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:uuid/uuid.dart';
 
 import '../globals.dart';
-import '../partials/widgets/custom_textfield.dart';
+import '../partials/rooms.dart';
 import '../partials/settings.dart';
-
+import '../partials/widgets/custom_textfield.dart';
 
 class SessionJoinDialog {
   static bool connectPressed = false;
@@ -15,7 +15,7 @@ class SessionJoinDialog {
   static void connectSession(BuildContext context, setState) {
     setState(() => connectPressed = true);
     if (sessionCodeInputController.text == '') sessionNameController.text = 'Untitled';
-    //Session.enterRoom(generatedSessionCode: sessionCodeInputController.text, roomName: sessionNameController.text);
+    Rooms.add(sessionCodeInputController.text, sessionNameController.text);
     Future.delayed(Duration(seconds: 1), () {
       setState(() => connectPressed = false);
       Navigator.of(context).pop();
@@ -29,7 +29,7 @@ class SessionJoinDialog {
   }
 
   static Future<void> render(BuildContext context) async {
-    if (await Settings.shouldNarrate()) tTs.speak("Join, If your disabled person, Ask help.");
+    if (await SecryptoSettings.shouldNarrate()) tTs.speak("Join, If your disabled person, Ask help.");
     return showGeneralDialog<void>(
         context: context,
         pageBuilder: (_, __, ___) => null,
@@ -101,11 +101,8 @@ class SessionAddDialog {
 
   static void connectSession(BuildContext context, setState) {
     if (sessionNameController.text == '') sessionNameController.text = 'Untitled';
-    //Session.enterRoom(generatedSessionCode: Uuid().v4(), roomName: sessionNameController.text);
-    setState(() {});
-    Future.delayed(Duration(seconds: 1), () {
-      Navigator.of(context).pop();
-    });
+    setState(() => Rooms.add(sessionCodeController.text, sessionNameController.text));
+    Navigator.of(context).pop();
   }
 
   static void copySession(BuildContext context, setState) async {

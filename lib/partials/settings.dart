@@ -1,6 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Settings {
+class SecryptoSettings {
   static final storage = SharedPreferences.getInstance();
 
   static void enableNarration(bool status) async {

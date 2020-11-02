@@ -7,24 +7,18 @@ class Rooms {
 
   // Map keys
   static const _roomNameKey = 'roomName';
-  static const _lastSendMsgKey = 'lastSendMsg';
-  static const _timeKey = 'time';
 
   // SharedPreferences key
   static const _storageKey = 'rooms';
 
-  static void add(String roomId, String roomName, String lastSendMsg, String profileUrl) {
+  static void add(String roomId, String roomName) {
     _rooms.addAll({
-      roomId: {
-        _roomNameKey: roomName,
-        _lastSendMsgKey: lastSendMsg,
-        _timeKey: 'New!',
-      }
+      roomId: {_roomNameKey: roomName}
     });
     save();
   }
 
-  static Map<String, Map<String, String>> get() => _rooms;
+  static Map<String, Map<String, String>> get rooms => _rooms;
 
   static void remove(String roomId) => _rooms.remove(roomId);
 

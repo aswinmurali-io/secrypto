@@ -20,9 +20,9 @@ class _SettingsRouteState extends State<SettingsRoute> {
   bool shouldReduceNetworkUsage;
 
   void initAsync() async {
-    shouldNarrate = await Settings.shouldNarrate();
-    shouldMorseCode = await Settings.shouldMorseCode();
-    shouldReduceNetworkUsage = await Settings.shouldReducedNetorkUsage();
+    shouldNarrate = await SecryptoSettings.shouldNarrate();
+    shouldMorseCode = await SecryptoSettings.shouldMorseCode();
+    shouldReduceNetworkUsage = await SecryptoSettings.shouldReducedNetorkUsage();
     setState(() {});
   }
 
@@ -36,7 +36,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (await Settings.shouldNarrate()) tTs.speak("Back to contacts");
+        if (await SecryptoSettings.shouldNarrate()) tTs.speak("Back to contacts");
         return true;
       },
       child: Scaffold(
@@ -71,7 +71,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
                       value: shouldNarrate ?? false,
                       onChanged: (value) async {
                         setState(() => shouldNarrate = value);
-                        Settings.enableNarration(value);
+                        SecryptoSettings.enableNarration(value);
                         tTs.speak("Narrate Messages $value");
                       },
                     ),
@@ -85,8 +85,8 @@ class _SettingsRouteState extends State<SettingsRoute> {
                       value: shouldMorseCode ?? false,
                       onChanged: (value) async {
                         setState(() => shouldMorseCode = value);
-                        Settings.enableMorseCode(value);
-                        if (await Settings.shouldNarrate()) tTs.speak("Use Morse Code $value");
+                        SecryptoSettings.enableMorseCode(value);
+                        if (await SecryptoSettings.shouldNarrate()) tTs.speak("Use Morse Code $value");
                       },
                     ),
                     onTap: () {}),
@@ -99,8 +99,8 @@ class _SettingsRouteState extends State<SettingsRoute> {
                       value: shouldReduceNetworkUsage ?? false,
                       onChanged: (value) async {
                         setState(() => shouldReduceNetworkUsage = value);
-                        Settings.enableReducedNetorkUsage(value);
-                        if (await Settings.shouldNarrate()) tTs.speak("Reduce Network Usage $value");
+                        SecryptoSettings.enableReducedNetorkUsage(value);
+                        if (await SecryptoSettings.shouldNarrate()) tTs.speak("Reduce Network Usage $value");
                       },
                     ),
                     onTap: () {}),

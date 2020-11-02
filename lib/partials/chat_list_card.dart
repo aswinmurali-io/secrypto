@@ -44,7 +44,7 @@ class _ChatListState extends State<ChatList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: MediaQuery.of(context).size.width - 54,
+                    width: MediaQuery.of(context).size.width - 200,
                     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
                       Text(time, style: TextStyle(color: Colors.blueGrey)),
@@ -58,7 +58,7 @@ class _ChatListState extends State<ChatList> {
         ),
       ),
       onTap: () async {
-        if (await Settings.shouldNarrate()) tTs.speak(name);
+        if (await SecryptoSettings.shouldNarrate()) tTs.speak(name);
         return Future.delayed(Duration(milliseconds: 200)).then(
           (_) => Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => ChatWindow(roomId: roomId, roomName: name),
