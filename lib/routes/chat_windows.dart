@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../globals.dart';
-import '../partials/auth.dart';
 import '../partials/chat_history.dart';
 import '../partials/widgets/custom_textfield.dart';
-import '../partials/widgets/msg_bubble.dart';
-import '../partials/settings_logic.dart';
+import '../partials/settings.dart';
 
 class ChatWindow extends StatefulWidget {
   final String roomId;
@@ -45,8 +43,7 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     chatHistory = ChatHistory.getChatHistory();
-    initAsync();
-    final chatHistoryKeys = chatHistory.keys.toList();
+    // final chatHistoryKeys = chatHistory.keys.toList();
     String buffer;
 
     return WillPopScope(
@@ -89,20 +86,20 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(children: [
-                        for (int chatId in chatHistoryKeys)
-                          SecryptoChatBubble(
-                            msg: (() {
-                              final msg = chatHistory[chatId]["msg"] ?? '';
-                              buffer = msg;
-                              return msg;
-                            }()),
-                            isReceiver: (() {
-                              if (chatHistory[chatId]["userId"] == Session.auth())
-                                return true;
-                              else if (chatHistory[chatId]["userId"] != Session.auth()) return false;
-                              return chatHistory[chatId]["isReceiver"] ?? false;
-                            }()),
-                          ),
+                        // for (int chatId in chatHistoryKeys)
+                        //   SecryptoChatBubble(
+                        //     msg: (() {
+                        //       final msg = chatHistory[chatId]["msg"] ?? '';
+                        //       buffer = msg;
+                        //       return msg;
+                        //     }()),
+                        //     isReceiver: (() {
+                        //       if (chatHistory[chatId]["userId"] == Session.auth())
+                        //         return true;
+                        //       else if (chatHistory[chatId]["userId"] != Session.auth()) return false;
+                        //       return chatHistory[chatId]["isReceiver"] ?? false;
+                        //     }()),
+                        //   ),
                       ]),
                     ),
                   ),

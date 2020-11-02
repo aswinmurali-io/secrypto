@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:secrypto/partials/auth.dart';
 import 'package:uuid/uuid.dart';
 
 import '../globals.dart';
-import 'widgets/custom_textfield.dart';
-import 'settings_logic.dart';
+import '../partials/widgets/custom_textfield.dart';
+import '../partials/settings.dart';
+
 
 class SessionJoinDialog {
   static bool connectPressed = false;
@@ -15,7 +15,7 @@ class SessionJoinDialog {
   static void connectSession(BuildContext context, setState) {
     setState(() => connectPressed = true);
     if (sessionCodeInputController.text == '') sessionNameController.text = 'Untitled';
-    Session.enterRoom(generatedSessionCode: sessionCodeInputController.text, roomName: sessionNameController.text);
+    //Session.enterRoom(generatedSessionCode: sessionCodeInputController.text, roomName: sessionNameController.text);
     Future.delayed(Duration(seconds: 1), () {
       setState(() => connectPressed = false);
       Navigator.of(context).pop();
@@ -101,7 +101,7 @@ class SessionAddDialog {
 
   static void connectSession(BuildContext context, setState) {
     if (sessionNameController.text == '') sessionNameController.text = 'Untitled';
-    Session.enterRoom(generatedSessionCode: Uuid().v4(), roomName: sessionNameController.text);
+    //Session.enterRoom(generatedSessionCode: Uuid().v4(), roomName: sessionNameController.text);
     setState(() {});
     Future.delayed(Duration(seconds: 1), () {
       Navigator.of(context).pop();

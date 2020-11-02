@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:secrypto/routes/chat_windows.dart';
 
 import '../globals.dart';
-import 'settings_logic.dart';
+import 'settings.dart';
 
 class ChatList extends StatefulWidget {
   final String name;
@@ -33,18 +33,17 @@ class _ChatListState extends State<ChatList> {
         padding: const EdgeInsets.all(12.0),
         child: Row(
           children: [
-            // CircleAvatar(
-            //     radius: 30.0,
-            //     child: ClipOval(
-            //       child: (profileURL == null) ? Icon(Icons.portrait_rounded) : Image.network(profileURL),
-            //     )),
+            CircleAvatar(
+                radius: 30.0,
+                child: ClipOval(
+                  child: (profileURL == null) ? Icon(Icons.portrait_rounded) : Image.network(profileURL),
+                )),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    //width: MediaQuery.of(context).size.width - 114,
                     width: MediaQuery.of(context).size.width - 54,
                     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                       Text(name, style: TextStyle(fontWeight: FontWeight.bold)),
