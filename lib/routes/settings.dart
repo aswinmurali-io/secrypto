@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:secrypto/partials/user.dart';
 
 import '../globals.dart';
 import '../partials/settings.dart';
@@ -19,11 +20,25 @@ class _SettingsRouteState extends State<SettingsRoute> {
   bool shouldMorseCode;
   bool shouldReduceNetworkUsage;
 
+  String dpUrl;
+
   void initAsync() async {
     shouldNarrate = await SecryptoSettings.shouldNarrate();
     shouldMorseCode = await SecryptoSettings.shouldMorseCode();
     shouldReduceNetworkUsage = await SecryptoSettings.shouldReducedNetorkUsage();
-    setState(() {});
+    try {
+      dpUrl = await User.getDp;
+    } catch (error) {
+      switch(error.code) {
+        case 'object-not-found':
+          print("Error at initAsync() Display picture not avaliable!");
+          break;
+        default:
+          print("Error at initAsync() $error");
+          break;
+      }
+    }
+    setState(() => {dpUrl, shouldNarrate, shouldMorseCode, shouldReduceNetworkUsage});
   }
 
   @override
@@ -53,8 +68,22 @@ class _SettingsRouteState extends State<SettingsRoute> {
                       title: Text("Aswin"),
                       leading: CircleAvatar(
                         radius: 40.0,
+                        backgroundColor: Colors.transparent,
                         child: ClipOval(
-                          child: Container(), //Image.network(''),
+                          child: Image.network(
+                            dpUrl ?? placeHolderDp,
+                            fit: BoxFit.fill,
+                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value: loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
+                                      : null,
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                       onTap: () {}),

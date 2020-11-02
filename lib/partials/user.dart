@@ -45,12 +45,5 @@ class User {
     }
   }
 
-  static Future<String> getDp() async {
-    try {
-      await cloud.ref(auth.currentUser.uid).getDownloadURL();
-    } catch (e) {
-      print(e);
-    }
-    return 'http://www.gravatar.com/avatar/3b3be63a4c2a439b013787725dfce802?d=identicon';
-  }
+  static Future<String> get getDp async => await cloud.ref(auth.currentUser.uid).getDownloadURL();
 }

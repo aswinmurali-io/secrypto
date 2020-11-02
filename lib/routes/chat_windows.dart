@@ -18,13 +18,12 @@ class ChatWindow extends StatefulWidget {
 }
 
 class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateMixin {
-  final sendMsgInput = TextEditingController();
   final String roomId;
   final String roomName;
 
   _ChatWindowState(this.roomId, this.roomName);
 
-  //String buffer;
+  final sendMsgInput = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
