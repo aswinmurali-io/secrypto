@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:secrypto/partials/user.dart';
 
 import '../globals.dart';
@@ -21,15 +22,20 @@ class _SettingsRouteState extends State<SettingsRoute> {
   bool shouldReduceNetworkUsage;
 
   String dpUrl;
+  String userGeneratedEmail;
 
   void initAsync() async {
     shouldNarrate = await SecryptoSettings.shouldNarrate();
     shouldMorseCode = await SecryptoSettings.shouldMorseCode();
     shouldReduceNetworkUsage = await SecryptoSettings.shouldReducedNetorkUsage();
+    userGeneratedEmail = await User.getEmail;
+    setState(() => {shouldNarrate, shouldMorseCode, shouldReduceNetworkUsage, userGeneratedEmail});
+    
+    // This will take time so we set state later on
     try {
       dpUrl = await User.getDp;
     } catch (error) {
-      switch(error.code) {
+      switch (error.code) {
         case 'object-not-found':
           print("Error at initAsync() Display picture not avaliable!");
           break;
@@ -38,7 +44,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
           break;
       }
     }
-    setState(() => {dpUrl, shouldNarrate, shouldMorseCode, shouldReduceNetworkUsage});
+    setState(() => dpUrl);
   }
 
   @override
@@ -63,13 +69,20 @@ class _SettingsRouteState extends State<SettingsRoute> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 25),
+                  padding: const EdgeInsets.fromLTRB(0, 15, 15, 25),
                   child: ListTile(
-                      title: Text("Aswin"),
+                      title: Text("User Name"),
+                      subtitle: Text(userGeneratedEmail ?? "Email"),
+                      isThreeLine: true,
                       leading: CircleAvatar(
                         radius: 40.0,
                         backgroundColor: Colors.transparent,
-                        child: ClipOval(
+                        child: InkWell(
+                          onTap: () async {
+                            setState(() => dpUrl = null);
+                            await User.uploadDp();
+                            setState(() => dpUrl);
+                          },
                           child: Image.network(
                             dpUrl ?? placeHolderDp,
                             fit: BoxFit.fill,

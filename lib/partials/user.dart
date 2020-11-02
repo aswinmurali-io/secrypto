@@ -37,7 +37,11 @@ class User {
   }
 
   static Future<void> uploadDp() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    final pickedFile = await picker.getImage(
+      source: ImageSource.camera,
+      imageQuality: 80,
+      preferredCameraDevice: CameraDevice.front,
+    );
 
     if (pickedFile != null) {
       final imgFile = File(pickedFile.path);
