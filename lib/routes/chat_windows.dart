@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:secrypto/partials/auth.dart';
-import 'package:secrypto/partials/chat_history.dart';
-
 import 'package:intl/intl.dart';
-import 'package:secrypto/partials/settings_logic.dart';
 
+import '../globals.dart';
+import '../partials/auth.dart';
+import '../partials/chat_history.dart';
 import '../partials/custom_textfield.dart';
 import '../partials/msg_bubble.dart';
+import '../partials/settings_logic.dart';
 
 class ChatWindow extends StatefulWidget {
   final String roomId;
@@ -58,14 +58,14 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
         appBar: AppBar(
           title: Row(
             children: [
-              // CircleAvatar(
-              //     child: ClipOval(
-              //         child: InkWell(
-              //       onTap: () {},
-              //       child: Image.network(
-              //           'https://images-ext-1.discordapp.net/external/D4rWYQqsn8UnHC5u_rUDzsrKAkAl64FlPW8aqdPzLA0/%3Fixlib%3Drb-1.2.1%26auto%3Dformat%26fit%3Dcrop%26w%3D500%26q%3D60/https/images.unsplash.com/photo-1498837167922-ddd27525d352'),
-              //     )),
-              //     radius: 20.0),
+              CircleAvatar(
+                  child: ClipOval(
+                      child: InkWell(
+                    onTap: () {},
+                    child: Image.network(
+                        'https://images-ext-1.discordapp.net/external/D4rWYQqsn8UnHC5u_rUDzsrKAkAl64FlPW8aqdPzLA0/%3Fixlib%3Drb-1.2.1%26auto%3Dformat%26fit%3Dcrop%26w%3D500%26q%3D60/https/images.unsplash.com/photo-1498837167922-ddd27525d352'),
+                  )),
+                  radius: 20.0),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                 child: Text(roomName ?? 'Chat'),

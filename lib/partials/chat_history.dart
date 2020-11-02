@@ -32,6 +32,4 @@ class ChatHistory {
     firebase.collection(roomId).doc(_msgCount.toString()).set({"msg": msg, "userId": uid});
   }
 
-
-  
 }

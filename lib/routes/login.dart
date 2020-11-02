@@ -2,7 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
+import '../globals.dart';
 import '../partials/auth.dart';
 
 import 'contact_list.dart';
@@ -15,6 +17,10 @@ class LoginRoute extends StatefulWidget {
 }
 
 Future<String> autoLogin(BuildContext context) async {
+  String userName = (await storage).getString('userName');
+
+  if (auth.currentUser == null)
+    auth.signInWithEmailAndPassword(email: null, password: uuid.v5(Uuid.NAMESPACE_X500, userName));
   if (await Session.checkAuth() != null)
     Future.delayed(Duration.zero, () {
       Navigator.of(context).pushReplacement(

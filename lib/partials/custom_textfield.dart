@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'msg_bubble.dart';
+import '../globals.dart';
 import 'settings_logic.dart';
 
 class SecryptoTextField extends StatelessWidget {

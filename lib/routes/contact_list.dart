@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:secrypto/partials/msg_bubble.dart';
-import 'package:secrypto/partials/session.dart';
-import 'package:secrypto/partials/rooms.dart';
-import 'package:secrypto/partials/settings_logic.dart';
+import '../partials/session.dart';
+import '../partials/rooms.dart';
+import '../partials/settings_logic.dart';
 
+import '../globals.dart';
 import '../partials/chat_list_card.dart';
 import 'settings.dart';
 

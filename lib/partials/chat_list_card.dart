@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:secrypto/routes/chat_windows.dart';
 
-import 'msg_bubble.dart';
+import '../globals.dart';
 import 'settings_logic.dart';
 
 class ChatList extends StatefulWidget {

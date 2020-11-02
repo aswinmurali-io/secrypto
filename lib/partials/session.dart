@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:secrypto/partials/auth.dart';
 import 'package:uuid/uuid.dart';
 
+import '../globals.dart';
 import 'custom_textfield.dart';
-import 'msg_bubble.dart';
 import 'settings_logic.dart';
 
 class SessionJoinDialog {

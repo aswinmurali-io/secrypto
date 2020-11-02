@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:secrypto/partials/msg_bubble.dart';
+
 import 'package:secrypto/partials/session.dart';
 import 'package:secrypto/partials/rooms.dart';
 import 'package:secrypto/partials/settings_logic.dart';
 
 import 'package:secrypto/partials/chat_list_card.dart';
 import 'package:secrypto/routes/settings.dart';
+import 'package:secrypto/globals.dart';
 
 class ContactListRoute extends StatefulWidget {
   ContactListRoute({Key key}) : super(key: key);

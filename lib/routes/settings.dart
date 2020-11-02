@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:secrypto/partials/msg_bubble.dart';
-import 'package:secrypto/partials/settings_logic.dart';
+
+import '../globals.dart';
+import '../partials/settings_logic.dart';
 
 // TODO: add logic for profile dp and transfer account
-// TODO: remove qr code 
+// TODO: remove qr code
 
 class SettingsRoute extends StatefulWidget {
   SettingsRoute({Key key}) : super(key: key);

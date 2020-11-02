@@ -1,9 +1,8 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 import 'package:secrypto/partials/settings_logic.dart';
 
-final flutterTts = FlutterTts();
+import '../globals.dart';
 
 class SecryptoChatBubble extends StatelessWidget {
   final String msg;
