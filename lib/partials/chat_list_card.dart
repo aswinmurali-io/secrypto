@@ -59,7 +59,7 @@ class _ChatListState extends State<ChatList> {
         ),
       ),
       onTap: () async {
-        if (await Settings.shouldNarrate()) flutterTts.speak(name);
+        if (await Settings.shouldNarrate()) tTs.speak(name);
         return Future.delayed(Duration(milliseconds: 200)).then(
           (_) => Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => ChatWindow(roomId: roomId, roomName: name),

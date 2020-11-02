@@ -2,7 +2,7 @@ import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:secrypto/partials/settings_logic.dart';
 
-import '../globals.dart';
+import '../../globals.dart';
 
 class SecryptoChatBubble extends StatelessWidget {
   final String msg;
@@ -21,7 +21,7 @@ class SecryptoChatBubble extends StatelessWidget {
       color: (isReceiver) ? Colors.white.withOpacity(0.8) : Colors.blueGrey,
       child: InkWell(
           onTap: () async {
-            if (await Settings.shouldNarrate()) flutterTts.speak(msg);
+            if (await Settings.shouldNarrate()) tTs.speak(msg);
           },
           child: Text(
             msg ?? 'Unknown msg',

@@ -36,7 +36,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (await Settings.shouldNarrate()) flutterTts.speak("Back to contacts");
+        if (await Settings.shouldNarrate()) tTs.speak("Back to contacts");
         return true;
       },
       child: Scaffold(
@@ -72,7 +72,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
                       onChanged: (value) async {
                         setState(() => shouldNarrate = value);
                         Settings.enableNarration(value);
-                        flutterTts.speak("Narrate Messages $value");
+                        tTs.speak("Narrate Messages $value");
                       },
                     ),
                     onTap: () {}),
@@ -86,7 +86,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
                       onChanged: (value) async {
                         setState(() => shouldMorseCode = value);
                         Settings.enableMorseCode(value);
-                        if (await Settings.shouldNarrate()) flutterTts.speak("Use Morse Code $value");
+                        if (await Settings.shouldNarrate()) tTs.speak("Use Morse Code $value");
                       },
                     ),
                     onTap: () {}),
@@ -100,7 +100,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
                       onChanged: (value) async {
                         setState(() => shouldReduceNetworkUsage = value);
                         Settings.enableReducedNetorkUsage(value);
-                        if (await Settings.shouldNarrate()) flutterTts.speak("Reduce Network Usage $value");
+                        if (await Settings.shouldNarrate()) tTs.speak("Reduce Network Usage $value");
                       },
                     ),
                     onTap: () {}),

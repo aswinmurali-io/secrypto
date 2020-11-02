@@ -4,7 +4,7 @@ import 'package:secrypto/partials/auth.dart';
 import 'package:uuid/uuid.dart';
 
 import '../globals.dart';
-import 'custom_textfield.dart';
+import 'widgets/custom_textfield.dart';
 import 'settings_logic.dart';
 
 class SessionJoinDialog {
@@ -29,7 +29,7 @@ class SessionJoinDialog {
   }
 
   static Future<void> render(BuildContext context) async {
-    if (await Settings.shouldNarrate()) flutterTts.speak("Join, If your disabled person, Ask help.");
+    if (await Settings.shouldNarrate()) tTs.speak("Join, If your disabled person, Ask help.");
     return showGeneralDialog<void>(
         context: context,
         pageBuilder: (_, __, ___) => null,

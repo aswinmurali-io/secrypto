@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import '../globals.dart';
 import '../partials/auth.dart';
 import '../partials/chat_history.dart';
-import '../partials/custom_textfield.dart';
-import '../partials/msg_bubble.dart';
+import '../partials/widgets/custom_textfield.dart';
+import '../partials/widgets/msg_bubble.dart';
 import '../partials/settings_logic.dart';
 
 class ChatWindow extends StatefulWidget {
@@ -51,7 +51,7 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
 
     return WillPopScope(
       onWillPop: () async {
-        if (await Settings.shouldNarrate()) flutterTts.speak("Back to contacts");
+        if (await Settings.shouldNarrate()) tTs.speak("Back to contacts");
         return true;
       },
       child: Scaffold(
@@ -129,14 +129,14 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
                                       final DateTime now = DateTime.now();
                                       final DateFormat formatter = DateFormat('yyyy-MM-dd');
                                       final String formatted = formatter.format(now);
-                                      if (await Settings.shouldNarrate()) flutterTts.speak(sendMsgInput.text);
+                                      if (await Settings.shouldNarrate()) tTs.speak(sendMsgInput.text);
                                       buffer = sendMsgInput.text;
                                       setState(() {
                                         ChatHistory.putMsg(sendMsgInput.text, formatted, false, roomId);
                                       });
                                       sendMsgInput.text = '';
                                     } else {
-                                      if (await Settings.shouldNarrate()) flutterTts.speak(buffer ?? "Nothing");
+                                      if (await Settings.shouldNarrate()) tTs.speak(buffer ?? "Nothing");
                                     }
                                   },
                                   elevation: 2.0,

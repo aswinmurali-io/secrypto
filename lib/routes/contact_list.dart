@@ -40,7 +40,7 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
             IconButton(
                 icon: Icon(Icons.settings),
                 onPressed: () async {
-                  if (await Settings.shouldNarrate()) flutterTts.speak("Opened Settings");
+                  if (await Settings.shouldNarrate()) tTs.speak("Opened Settings");
                   Future.delayed(Duration(milliseconds: 100), () {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => SettingsRoute(),
@@ -88,7 +88,7 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
                     _scaffoldKey.currentState.showSnackBar(
                       SnackBar(content: Text("Session created, Link copied into clipboard!")),
                     );
-                    if (await Settings.shouldNarrate()) flutterTts.speak("Create, If your disabled person, Ask help.");
+                    if (await Settings.shouldNarrate()) tTs.speak("Create, If your disabled person, Ask help.");
                     await SessionAddDialog.render(context);
                     setState(() {});
                     Future.delayed(Duration(seconds: 2), () {

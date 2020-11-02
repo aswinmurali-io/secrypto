@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../globals.dart';
-import 'settings_logic.dart';
+import '../../globals.dart';
+import '../settings_logic.dart';
 
 class SecryptoTextField extends StatelessWidget {
   final String hintText;
@@ -34,7 +34,7 @@ class SecryptoTextField extends StatelessWidget {
     return SizedBox(
       child: TextField(
         onTap: () async {
-          if (await Settings.shouldNarrate()) flutterTts.speak("Textbox selected!");
+          if (await Settings.shouldNarrate()) tTs.speak("Textbox selected!");
         },
         controller: controller,
         style: TextStyle(
