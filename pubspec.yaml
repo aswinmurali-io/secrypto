@@ -25,6 +25,8 @@ dependencies:
   image_picker: ^0.6.7+12
   barcode_scan:
   qr_flutter: 
+  vibration: ^1.2.4
+  torch: ^0.1.1
 
 dev_dependencies:
   flutter_test:

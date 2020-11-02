@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.crysalis.secrypto">
   <meta-data android:name="firebase_performance_logcat_enabled" android:value="true" />
+  <uses-permission android:name="android.permission.VIBRATE"/>
+  <uses-permission android:name="android.permission.FLASHLIGHT"/>
   <uses-permission android:name="android.permission.VIBRATE" />
   <uses-feature android:name="android.hardware.camera" />
   <uses-permission android:name="android.permission.CAMERA"/>
