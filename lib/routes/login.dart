@@ -3,10 +3,8 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../globals.dart';
-import '../partials/auth.dart';
-
-import 'contact_list.dart';
+import '../partials/user.dart';
+import '../routes/contact_list.dart';
 
 class LoginRoute extends StatefulWidget {
   LoginRoute({Key key}) : super(key: key);
@@ -15,13 +13,7 @@ class LoginRoute extends StatefulWidget {
   _LoginRouteState createState() => _LoginRouteState();
 }
 
-/*Future.delayed(Duration.zero, () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-        builder: (context) => ContactListRoute(),
-      ));
-    }); */
-
-Future<bool> autoLogin(BuildContext context) async {
+Future<bool> autoLogin() async {
   await Firebase.initializeApp();
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   if (User.checkIfloggedIn)
@@ -39,7 +31,7 @@ class _LoginRouteState extends State<LoginRoute> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<bool>(
-        future: autoLogin(context),
+        future: autoLogin(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           final userLoggedIn = snapshot.data;
           if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
@@ -101,15 +93,12 @@ class _LoginRouteState extends State<LoginRoute> {
                               color: Colors.orange[300],
                               onPressed: (_registerButtonStatus)
                                   ? () async {
-                                      setState(() {
-                                        return _registerButtonStatus = !_registerButtonStatus;
-                                      });
-                                      await User.signup();
-                                      Future.delayed(Duration(milliseconds: 200)).then(
-                                        (_) => Navigator.of(context).pushReplacement(
+                                      setState(() => _registerButtonStatus = !_registerButtonStatus);
+                                      await User.signup().then((_) {
+                                        Navigator.of(context).pushReplacement(
                                           MaterialPageRoute(builder: (context) => ContactListRoute()),
-                                        ),
-                                      );
+                                        );
+                                      });
                                     }
                                   : null,
                             ),
@@ -119,11 +108,11 @@ class _LoginRouteState extends State<LoginRoute> {
                 ),
               );
             return ContactListRoute();
-          }
-          return Scaffold(
-              body: Center(
-            child: Text("Secrypto", style: Theme.of(context).textTheme.headline5),
-          ));
+          } else
+            return Scaffold(
+                body: Center(
+              child: Text("Secrypto", style: Theme.of(context).textTheme.headline5),
+            ));
         });
   }
 }

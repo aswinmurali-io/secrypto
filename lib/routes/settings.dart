@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../globals.dart';
-import '../partials/settings_logic.dart';
+import '../partials/settings.dart';
 
 // TODO: add logic for profile dp and transfer account
 // TODO: remove qr code

@@ -1,6 +1,6 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
-import 'package:secrypto/partials/settings_logic.dart';
+import 'package:secrypto/partials/settings.dart';
 
 import '../../globals.dart';
 
@@ -26,7 +26,9 @@ class SecryptoChatBubble extends StatelessWidget {
           child: Text(
             msg ?? 'Unknown msg',
             textAlign: TextAlign.right,
-            style: TextStyle(color: (isReceiver) ? Colors.black : Colors.white),
+            style: TextStyle(
+              color: (isReceiver) ? Colors.black : Colors.white,
+            ),
           )),
     );
   }

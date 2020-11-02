@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../partials/session.dart';
+import '../dialog/session.dart';
 import '../partials/rooms.dart';
-import '../partials/settings_logic.dart';
+import '../partials/settings.dart';
 
 import '../globals.dart';
 import '../partials/chat_list_card.dart';

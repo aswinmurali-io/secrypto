@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../globals.dart';
-import '../settings_logic.dart';
+import '../settings.dart';
 
 class SecryptoTextField extends StatelessWidget {
   final String hintText;
