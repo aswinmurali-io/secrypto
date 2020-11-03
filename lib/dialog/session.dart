@@ -3,9 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:secrypto/partials/accessibility.dart';
 import 'package:uuid/uuid.dart';
 
-import '../globals.dart';
 import '../partials/rooms.dart';
-import '../partials/settings.dart';
 import '../partials/widgets/custom_textfield.dart';
 
 class SessionJoinDialog {

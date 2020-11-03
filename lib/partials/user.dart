@@ -7,6 +7,7 @@ import '../globals.dart';
 class User {
   static const _userEmailKey = 'userEmail';
   static const _userPasswordKey = 'userPassword';
+  static const _userNameKey = 'userName';
 
   static bool get checkIfloggedIn => auth.currentUser != null;
 
@@ -25,6 +26,13 @@ class User {
   }
 
   static Future<String> get getEmail async => (await storage).getString(_userEmailKey);
+
+  static Future<void> setName(String name) async {
+    await db.collection('users').doc(auth.currentUser.uid).set({_userNameKey: name});
+  }
+
+  static Future<String> getName() async =>
+      (await db.collection('users').doc(auth.currentUser.uid).get()).data()[_userNameKey];
 
   static Future<void> signin() async {
     final generatedEmail = (await storage).getString(_userEmailKey);

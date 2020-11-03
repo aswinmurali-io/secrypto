@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -14,3 +16,5 @@ final placeHolderDp = 'http://www.gravatar.com/avatar/3b3be63a4c2a439b013787725d
 final storage = SharedPreferences.getInstance();
 final tTs = FlutterTts();
 final uuid = Uuid();
+
+Brightness globalBrightness  = Brightness.light;

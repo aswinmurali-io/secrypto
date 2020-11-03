@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:secrypto/partials/accessibility.dart';
 
-import '../../globals.dart';
-import '../settings.dart';
-
 class SecryptoTextField extends StatelessWidget {
   final String hintText;
   final IconData prefixIconData;

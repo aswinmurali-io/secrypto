@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:secrypto/globals.dart';
 import 'package:torch/torch.dart';
 import 'package:vibration/vibration.dart';

@@ -1,8 +1,6 @@
 import 'package:bubble/bubble.dart';
 import 'package:flutter/material.dart';
-import 'package:secrypto/partials/settings.dart';
 
-import '../../globals.dart';
 import '../accessibility.dart';
 
 class SecryptoChatBubble extends StatefulWidget {

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:secrypto/routes/chat_windows.dart';
 
-import '../globals.dart';
 import 'accessibility.dart';
-import 'settings.dart';
 
 class ChatList extends StatefulWidget {
   final String name;

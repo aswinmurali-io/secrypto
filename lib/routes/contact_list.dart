@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:secrypto/partials/accessibility.dart';
 
 import '../dialog/session.dart';
-import '../globals.dart';
 
 import '../partials/chat_list_card.dart';
 import '../partials/rooms.dart';
-import '../partials/settings.dart';
 
 import '../routes/settings.dart';
 

@@ -1,13 +1,13 @@
 import 'dart:async';
 
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:secrypto/partials/accessibility.dart';
-import 'package:secrypto/partials/user.dart';
 
 import '../globals.dart';
+import '../partials/accessibility.dart';
 import '../partials/settings.dart';
+import '../partials/user.dart';
 
 // TODO: add logic for profile dp and transfer account
 // TODO: remove qr code
@@ -24,9 +24,11 @@ class _SettingsRouteState extends State<SettingsRoute> {
   bool shouldMorseCode;
   bool shouldReduceNetworkUsage;
   bool sendSos;
+  bool darkModeEnabled;
 
   String dpUrl;
   String userGeneratedEmail;
+  String userName;
 
   void initAsync() async {
     shouldNarrate = await SecryptoSettings.shouldNarrate();
@@ -34,6 +36,8 @@ class _SettingsRouteState extends State<SettingsRoute> {
     shouldReduceNetworkUsage = await SecryptoSettings.shouldReducedNetorkUsage();
     sendSos = await SecryptoSettings.shouldSosMorseFlash();
     userGeneratedEmail = await User.getEmail;
+    userName = await User.getName();
+    darkModeEnabled = await SecryptoSettings.shouldDarkMode();
     setState(() => {shouldNarrate, shouldMorseCode, shouldReduceNetworkUsage, userGeneratedEmail});
 
     // This will take time so we set state later on
@@ -81,8 +85,8 @@ class _SettingsRouteState extends State<SettingsRoute> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 15, 15, 25),
                   child: ListTile(
-                      title: Text("User Name"),
-                      subtitle: Text(userGeneratedEmail ?? "Email"),
+                      title: Text(userName ?? '...'),
+                      subtitle: Text(userGeneratedEmail ?? "..."),
                       isThreeLine: true,
                       leading: CircleAvatar(
                         radius: 40.0,
@@ -112,8 +116,8 @@ class _SettingsRouteState extends State<SettingsRoute> {
                       onTap: () {}),
                 ),
                 ListTile(
-                    title: Text("Transfer Account"),
-                    subtitle: Text("Transfer account key via QR code into web browser."),
+                    title: Text("Mirror Account"),
+                    subtitle: Text("Mirror account key via QR code into another device."),
                     onTap: () {}),
                 ListTile(
                     title: Text("Narrate Messages"),
@@ -166,6 +170,21 @@ class _SettingsRouteState extends State<SettingsRoute> {
                         setState(() => sendSos = value);
                         await msgAccesiblity("Send SOS Flash $value");
                         SecryptoSettings.enableSosMorseFlash(value);
+                      },
+                    ),
+                    onTap: () {}),
+                ListTile(
+                    title: Text("Dark Mode"),
+                    subtitle: Text("Toggle dark mode for this application."),
+                    isThreeLine: true,
+                    trailing: Switch(
+                      value: darkModeEnabled ?? false,
+                      onChanged: (value) async {
+                        DynamicTheme.of(context).setBrightness(
+                            Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark);
+                        setState(() => darkModeEnabled = value);
+                        await msgAccesiblity("Dark Mode $value");
+                        SecryptoSettings.enableDarkMode(value);
                       },
                     ),
                     onTap: () {}),
