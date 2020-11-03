@@ -76,5 +76,4 @@ Future<void> morseCodeFlash(String msg) async {
 Future<void> msgAccesiblity(String msg) async {
   if (await SecryptoSettings.shouldNarrate()) tTs.speak(msg);
   if (await SecryptoSettings.shouldMorseCode()) morseCodeVibrate(msg);
-  morseCodeFlash(msg);
 }

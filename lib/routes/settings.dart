@@ -56,7 +56,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
     sendSos = false;
     initAsync();
     Timer.periodic(Duration(seconds: 8), (Timer t) async {
-      if (sendSos ?? false) await msgAccesiblity("SOS");
+      if (sendSos ?? false) await morseCodeFlash("SOS");
     });
     super.initState();
   }
