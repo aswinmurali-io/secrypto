@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -21,6 +23,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
   bool shouldNarrate;
   bool shouldMorseCode;
   bool shouldReduceNetworkUsage;
+  bool sendSos;
 
   String dpUrl;
   String userGeneratedEmail;
@@ -31,7 +34,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
     shouldReduceNetworkUsage = await SecryptoSettings.shouldReducedNetorkUsage();
     userGeneratedEmail = await User.getEmail;
     setState(() => {shouldNarrate, shouldMorseCode, shouldReduceNetworkUsage, userGeneratedEmail});
-    
+
     // This will take time so we set state later on
     try {
       dpUrl = await User.getDp;
@@ -50,7 +53,11 @@ class _SettingsRouteState extends State<SettingsRoute> {
 
   @override
   void initState() {
+    sendSos = false;
     initAsync();
+    Timer.periodic(Duration(seconds: 8), (Timer t) async {
+      if (sendSos ?? false) await msgAccesiblity("SOS");
+    });
     super.initState();
   }
 
@@ -112,7 +119,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
                     isThreeLine: true,
                     trailing: Switch(
                       value: shouldNarrate ?? false,
-                      onChanged: (value) async{
+                      onChanged: (value) async {
                         setState(() => shouldNarrate = value);
                         SecryptoSettings.enableNarration(value);
                         await msgAccesiblity("Narrate Messages $value");
@@ -145,6 +152,15 @@ class _SettingsRouteState extends State<SettingsRoute> {
                         SecryptoSettings.enableReducedNetorkUsage(value);
                         await msgAccesiblity("Reduce Network Usage $value");
                       },
+                    ),
+                    onTap: () {}),
+                ListTile(
+                    title: Text("Send SOS Flash"),
+                    subtitle: Text("Your mobile phone will send a SOS morse code flash signal"),
+                    isThreeLine: true,
+                    trailing: Switch(
+                      value: sendSos ?? false,
+                      onChanged: (value) => setState(() => sendSos = value),
                     ),
                     onTap: () {}),
               ],
