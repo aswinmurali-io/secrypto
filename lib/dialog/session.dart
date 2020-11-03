@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:secrypto/partials/accessibility.dart';
 import 'package:uuid/uuid.dart';
 
 import '../globals.dart';
@@ -29,7 +30,7 @@ class SessionJoinDialog {
   }
 
   static Future<void> render(BuildContext context) async {
-    if (await SecryptoSettings.shouldNarrate()) tTs.speak("Join, If your disabled person, Ask help.");
+    await msgAccesiblity("Join, If your disabled person, Ask help.");
     return showGeneralDialog<void>(
         context: context,
         pageBuilder: (_, __, ___) => null,

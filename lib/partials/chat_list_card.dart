@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:secrypto/routes/chat_windows.dart';
 
 import '../globals.dart';
+import 'accessibility.dart';
 import 'settings.dart';
 
 class ChatList extends StatefulWidget {
@@ -58,7 +59,7 @@ class _ChatListState extends State<ChatList> {
         ),
       ),
       onTap: () async {
-        if (await SecryptoSettings.shouldNarrate()) tTs.speak(name);
+        await msgAccesiblity(name);
         return Future.delayed(Duration(milliseconds: 200)).then(
           (_) => Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => ChatWindow(roomId: roomId, roomName: name),

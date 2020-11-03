@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:secrypto/partials/settings.dart';
 
 import '../../globals.dart';
-import '../morsecode.dart';
+import '../accessibility.dart';
 
 class SecryptoChatBubble extends StatefulWidget {
   final String msg;
@@ -21,12 +21,10 @@ class _SecryptoChatBubbleState extends State<SecryptoChatBubble> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(microseconds: 10), () async {
-        if (await SecryptoSettings.shouldNarrate()) tTs.speak(msg);
-        if (await SecryptoSettings.shouldMorseCode()) morseCodeVibrate(msg);
-      });
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => Future.delayed(
+          Duration(microseconds: 10),
+          () async => await msgAccesiblity(msg),
+        ));
     super.initState();
   }
 
@@ -40,9 +38,7 @@ class _SecryptoChatBubbleState extends State<SecryptoChatBubble> {
       nip: BubbleNip.no,
       color: (isReceiver) ? Colors.white.withOpacity(0.8) : Colors.blueGrey,
       child: InkWell(
-          onTap: () async {
-            if (await SecryptoSettings.shouldNarrate()) tTs.speak(msg);
-          },
+          onTap: () async => await msgAccesiblity(msg),
           child: Text(
             msg ?? 'Unknown msg',
             textAlign: TextAlign.right,

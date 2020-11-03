@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:secrypto/partials/accessibility.dart';
 import 'package:secrypto/partials/widgets/msg_bubble.dart';
 
 import '../globals.dart';
@@ -29,7 +30,7 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (await SecryptoSettings.shouldNarrate()) tTs.speak("Back to contacts");
+        await msgAccesiblity("Back to contacts");
         return true;
       },
       child: Scaffold(

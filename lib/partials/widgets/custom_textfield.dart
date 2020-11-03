@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:secrypto/partials/accessibility.dart';
 
 import '../../globals.dart';
 import '../settings.dart';
@@ -33,9 +34,7 @@ class SecryptoTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       child: TextField(
-        onTap: () async {
-          if (await SecryptoSettings.shouldNarrate()) tTs.speak("Textbox selected!");
-        },
+        onTap: () async => await msgAccesiblity("Textbox selected!"),
         controller: controller,
         style: TextStyle(
           color: Colors.blueGrey,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:secrypto/partials/accessibility.dart';
 
 import '../dialog/session.dart';
 import '../globals.dart';
@@ -40,7 +41,7 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
             IconButton(
                 icon: Icon(Icons.settings),
                 onPressed: () async {
-                  if (await SecryptoSettings.shouldNarrate()) tTs.speak("Opened Settings");
+                  await msgAccesiblity("Opened Settings");
                   Future.delayed(Duration(milliseconds: 100), () {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => SettingsRoute(),
@@ -89,7 +90,7 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
                     _scaffoldKey.currentState.showSnackBar(
                       SnackBar(content: Text("Session created, Link copied into clipboard!")),
                     );
-                    if (await SecryptoSettings.shouldNarrate()) tTs.speak("Create, If your disabled person, Ask help.");
+                    await msgAccesiblity("Create, If your disabled person, Ask help.");
                     await SessionAddDialog.render(context);
                     setState(() {});
                     Future.delayed(Duration(seconds: 2), () {

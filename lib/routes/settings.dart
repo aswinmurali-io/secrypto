@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:secrypto/partials/accessibility.dart';
 import 'package:secrypto/partials/user.dart';
 
 import '../globals.dart';
@@ -57,7 +58,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (await SecryptoSettings.shouldNarrate()) tTs.speak("Back to contacts");
+        await msgAccesiblity("Back to contacts");
         return true;
       },
       child: Scaffold(
@@ -111,10 +112,10 @@ class _SettingsRouteState extends State<SettingsRoute> {
                     isThreeLine: true,
                     trailing: Switch(
                       value: shouldNarrate ?? false,
-                      onChanged: (value) async {
+                      onChanged: (value) async{
                         setState(() => shouldNarrate = value);
                         SecryptoSettings.enableNarration(value);
-                        tTs.speak("Narrate Messages $value");
+                        await msgAccesiblity("Narrate Messages $value");
                       },
                     ),
                     onTap: () {}),
@@ -128,7 +129,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
                       onChanged: (value) async {
                         setState(() => shouldMorseCode = value);
                         SecryptoSettings.enableMorseCode(value);
-                        if (await SecryptoSettings.shouldNarrate()) tTs.speak("Use Morse Code $value");
+                        await msgAccesiblity("Use Morse Code $value");
                       },
                     ),
                     onTap: () {}),
@@ -142,7 +143,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
                       onChanged: (value) async {
                         setState(() => shouldReduceNetworkUsage = value);
                         SecryptoSettings.enableReducedNetorkUsage(value);
-                        if (await SecryptoSettings.shouldNarrate()) tTs.speak("Reduce Network Usage $value");
+                        await msgAccesiblity("Reduce Network Usage $value");
                       },
                     ),
                     onTap: () {}),
