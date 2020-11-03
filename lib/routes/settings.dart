@@ -32,6 +32,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
     shouldNarrate = await SecryptoSettings.shouldNarrate();
     shouldMorseCode = await SecryptoSettings.shouldMorseCode();
     shouldReduceNetworkUsage = await SecryptoSettings.shouldReducedNetorkUsage();
+    sendSos = await SecryptoSettings.shouldSosMorseFlash();
     userGeneratedEmail = await User.getEmail;
     setState(() => {shouldNarrate, shouldMorseCode, shouldReduceNetworkUsage, userGeneratedEmail});
 
@@ -55,8 +56,9 @@ class _SettingsRouteState extends State<SettingsRoute> {
   void initState() {
     sendSos = false;
     initAsync();
-    Timer.periodic(Duration(seconds: 8), (Timer t) async {
-      if (sendSos ?? false) await morseCodeFlash("SOS");
+
+    Timer.periodic(Duration(seconds: 4), (Timer t) async {
+      if (await SecryptoSettings.shouldSosMorseFlash() ?? false) await morseCodeFlash("SOS");
     });
     super.initState();
   }
@@ -160,7 +162,10 @@ class _SettingsRouteState extends State<SettingsRoute> {
                     isThreeLine: true,
                     trailing: Switch(
                       value: sendSos ?? false,
-                      onChanged: (value) => setState(() => sendSos = value),
+                      onChanged: (value) {
+                        setState(() => sendSos = value);
+                        SecryptoSettings.enableSosMorseFlash(value);
+                      },
                     ),
                     onTap: () {}),
               ],

@@ -7,7 +7,6 @@ import 'package:secrypto/partials/widgets/msg_bubble.dart';
 import '../globals.dart';
 import '../partials/chat_history.dart';
 import '../partials/widgets/custom_textfield.dart';
-import '../partials/settings.dart';
 
 class ChatWindow extends StatefulWidget {
   final String roomId;

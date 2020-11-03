@@ -15,8 +15,16 @@ class SecryptoSettings {
     (await storage).setBool("reducedNetwork", status ?? false);
   }
 
+  static void enableSosMorseFlash(bool status) async {
+    (await storage).setBool("sosMorseFlash", status ?? false);
+  }
+
   static Future<bool> shouldNarrate() async {
     return (await storage).getBool("narration") ?? false;
+  }
+
+  static Future<bool> shouldSosMorseFlash() async {
+    return (await storage).getBool("sosMorseFlash") ?? false;
   }
 
   static Future<bool> shouldMorseCode() async {
