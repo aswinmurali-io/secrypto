@@ -25,6 +25,7 @@ dependencies:
   qr_flutter:
   vibration: ^1.2.4
   torch: ^0.1.1
+  qrscan: ^0.2.17
 
 dev_dependencies:
   flutter_test:
