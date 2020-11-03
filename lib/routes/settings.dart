@@ -162,8 +162,9 @@ class _SettingsRouteState extends State<SettingsRoute> {
                     isThreeLine: true,
                     trailing: Switch(
                       value: sendSos ?? false,
-                      onChanged: (value) {
+                      onChanged: (value) async {
                         setState(() => sendSos = value);
+                        await msgAccesiblity("Send SOS Flash $value");
                         SecryptoSettings.enableSosMorseFlash(value);
                       },
                     ),
