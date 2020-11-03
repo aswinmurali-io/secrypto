@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:secrypto/partials/settings.dart';
 
 import '../../globals.dart';
+import '../morsecode.dart';
 
 class SecryptoChatBubble extends StatefulWidget {
   final String msg;
@@ -21,7 +22,10 @@ class _SecryptoChatBubbleState extends State<SecryptoChatBubble> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(Duration(microseconds: 10), () => tTs.speak(msg));
+      Future.delayed(Duration(microseconds: 10), () async {
+        if (await SecryptoSettings.shouldNarrate()) tTs.speak(msg);
+        if (await SecryptoSettings.shouldMorseCode()) morseCodeVibrate(msg);
+      });
     });
     super.initState();
   }

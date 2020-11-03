@@ -4,7 +4,10 @@
     -->
     <uses-permission android:name="android.permission.INTERNET" />
     <meta-data android:name="firebase_performance_logcat_enabled" android:value="true" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA"/>
     <application android:requestLegacyExternalStorage="true">
     </application>
 </manifest>
