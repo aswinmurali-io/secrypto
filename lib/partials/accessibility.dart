@@ -45,7 +45,7 @@ final Map<String, String> mapper = {
 String encodeToMorseCode(String msg) {
   String temp = msg.toLowerCase();
   String code = '';
-  for (int i = 0; i < temp.length; i++) code += mapper[temp[i]] + ' ';
+  for (int i = 0; i < temp.length; i++) code += mapper[temp[i]] ?? '' + ' ';
   return code;
 }
 
