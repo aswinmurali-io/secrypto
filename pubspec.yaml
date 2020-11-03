@@ -23,10 +23,13 @@ dependencies:
   flutter_tts: ^1.3.0
   intl: ^0.16.1
   image_picker: ^0.6.7+12
+<<<<<<< HEAD
   barcode_scan:
   qr_flutter: 
   vibration: ^1.2.4
   torch: ^0.1.1
+=======
+>>>>>>> parent of 46ea95e... Merge branch 'master' of https://github.com/aswinmurali-io/secrypto
 
 dev_dependencies:
   flutter_test:
