@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:secrypto/partials/accessibility.dart';
+import 'package:secrypto/partials/user.dart';
 
 import '../dialog/session.dart';
 
+import '../globals.dart';
 import '../partials/chat_list_card.dart';
 import '../partials/rooms.dart';
 
@@ -20,8 +23,15 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   Map<String, Map<String, String>> rooms = {};
 
+  String dpUrl;
+  void initAsync() async {
+    dpUrl = await User.getDp;
+    setState(() => dpUrl);
+  }
+
   @override
   void initState() {
+    initAsync();
     Rooms.load();
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() => rooms = Rooms.rooms));
     joinAnimation = AnimationController(value: 0.0, vsync: this, duration: Duration(milliseconds: 200));
@@ -34,6 +44,29 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
+          leading: Padding(
+            padding: const EdgeInsets.fromLTRB(5, 5, 0, 0),
+            child: Hero(
+                tag: 'me',
+                child: Material(
+                    child: Transform.scale(
+                        scale: 0.8,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.grey,
+                          child: ClipOval(
+                              child: InkWell(
+                                  onTap: () async {
+                                    setState(() => dpUrl = null);
+                                    await User.uploadDp();
+                                    setState(() => dpUrl);
+                                  },
+                                  child: CachedNetworkImage(
+                                    imageUrl: dpUrl ?? placeHolderDp,
+                                    placeholder: (context, url) => CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                  ))),
+                        )))),
+          ),
           title: Text("Secrypto"),
           actions: [
             IconButton(

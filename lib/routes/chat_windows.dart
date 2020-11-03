@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:secrypto/partials/accessibility.dart';
+import 'package:secrypto/partials/user.dart';
 import 'package:secrypto/partials/widgets/msg_bubble.dart';
 
 import '../globals.dart';
@@ -21,9 +23,22 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
   final String roomId;
   final String roomName;
 
+  String dpUrl;
+
   _ChatWindowState(this.roomId, this.roomName);
 
   final sendMsgInput = TextEditingController();
+
+  void initAsync() async {
+    dpUrl = await User.getDp;
+    setState(() => dpUrl);
+  }
+
+  @override
+  void initState() {
+    initAsync();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,18 +51,28 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
         appBar: AppBar(
           title: Row(
             children: [
-              CircleAvatar(
-                  child: ClipOval(
-                      child: InkWell(
-                    onTap: () {},
-                    child: Image.network(
-                        'https://images-ext-1.discordapp.net/external/D4rWYQqsn8UnHC5u_rUDzsrKAkAl64FlPW8aqdPzLA0/%3Fixlib%3Drb-1.2.1%26auto%3Dformat%26fit%3Dcrop%26w%3D500%26q%3D60/https/images.unsplash.com/photo-1498837167922-ddd27525d352'),
-                  )),
-                  radius: 20.0),
+              Hero(
+                  tag: roomId,
+                  child: CircleAvatar(
+                      radius: 20.0,
+                      backgroundColor: Colors.grey,
+                      child: ClipOval(
+                          child: Material(
+                              child: InkWell(
+                                  onTap: () {},
+                                  child: CachedNetworkImage(
+                                    imageUrl: dpUrl ?? placeHolderDp,
+                                    placeholder: (context, url) => CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                  )))))),
               Padding(
-                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: Text(roomName ?? 'Chat'),
-              ),
+                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                  child: SizedBox(
+                      width: 260,
+                      child: Text(
+                        roomName ?? 'Chat',
+                        overflow: TextOverflow.ellipsis,
+                      ))),
             ],
           ),
           actions: [],

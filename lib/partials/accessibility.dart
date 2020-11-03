@@ -1,5 +1,5 @@
 import 'package:secrypto/globals.dart';
-import 'package:torch/torch.dart';
+import 'package:torch_compat/torch_compat.dart';
 import 'package:vibration/vibration.dart';
 
 import 'settings.dart';
@@ -65,8 +65,8 @@ Future<void> morseCodeFlash(String msg) async {
   for (int i = 0; i < code.length - 1; i++) {
     int time = timimg[code[i]];
     if (time > 0) {
-      await Future.delayed(Duration(milliseconds: time), () async => await Torch.turnOn());
-      await Future.delayed(Duration(milliseconds: time), () async => await Torch.turnOff());
+      await Future.delayed(Duration(milliseconds: time), () async => await TorchCompat.turnOn());
+      await Future.delayed(Duration(milliseconds: time), () async => await TorchCompat.turnOff());
     }
   }
 }

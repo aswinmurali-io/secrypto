@@ -32,11 +32,14 @@ class _ChatListState extends State<ChatList> {
         padding: const EdgeInsets.all(12.0),
         child: Row(
           children: [
-            CircleAvatar(
-                radius: 30.0,
-                child: ClipOval(
-                  child: (profileURL == null) ? Icon(Icons.portrait_rounded) : Image.network(profileURL),
-                )),
+            Hero(
+              tag: roomId,
+              child: CircleAvatar(
+                  radius: 30.0,
+                  child: ClipOval(
+                    child: (profileURL == null) ? Icon(Icons.portrait_rounded) : Image.network(profileURL),
+                  )),
+            ),
             Padding(
               padding: const EdgeInsets.all(15.0),
               child: Column(

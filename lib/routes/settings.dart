@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,11 @@ class _SettingsRouteState extends State<SettingsRoute> {
   String userGeneratedEmail;
   String userName;
 
+  @override
+  void setState(fn) {
+    if (mounted) super.setState(fn);
+  }
+
   void initAsync() async {
     shouldNarrate = await SecryptoSettings.shouldNarrate();
     shouldMorseCode = await SecryptoSettings.shouldMorseCode();
@@ -58,7 +64,6 @@ class _SettingsRouteState extends State<SettingsRoute> {
 
   @override
   void initState() {
-    sendSos = false;
     initAsync();
 
     Timer.periodic(Duration(seconds: 4), (Timer t) async {
@@ -88,28 +93,26 @@ class _SettingsRouteState extends State<SettingsRoute> {
                       title: Text(userName ?? '...'),
                       subtitle: Text(userGeneratedEmail ?? "..."),
                       isThreeLine: true,
-                      leading: CircleAvatar(
-                        radius: 40.0,
-                        backgroundColor: Colors.transparent,
-                        child: InkWell(
-                          onTap: () async {
-                            setState(() => dpUrl = null);
-                            await User.uploadDp();
-                            setState(() => dpUrl);
-                          },
-                          child: Image.network(
-                            dpUrl ?? placeHolderDp,
-                            fit: BoxFit.fill,
-                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return Center(
-                                child: CircularProgressIndicator(
-                                  value: loadingProgress.expectedTotalBytes != null
-                                      ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes
-                                      : null,
+                      leading: Hero(
+                        tag: 'me',
+                        child: Material(
+                          child: CircleAvatar(
+                            radius: 40.0,
+                            backgroundColor: Colors.grey,
+                            child: InkWell(
+                              onTap: () async {
+                                setState(() => dpUrl = null);
+                                await User.uploadDp();
+                                setState(() => dpUrl);
+                              },
+                              child: ClipOval(
+                                child: CachedNetworkImage(
+                                  imageUrl: dpUrl ?? placeHolderDp,
+                                  placeholder: (context, url) => CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) => Icon(Icons.error),
                                 ),
-                              );
-                            },
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -180,8 +183,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
                     trailing: Switch(
                       value: darkModeEnabled ?? false,
                       onChanged: (value) async {
-                        DynamicTheme.of(context).setBrightness(
-                            Theme.of(context).brightness == Brightness.dark ? Brightness.light : Brightness.dark);
+                        DynamicTheme.of(context).setBrightness(value ? Brightness.dark : Brightness.light);
                         setState(() => darkModeEnabled = value);
                         await msgAccesiblity("Dark Mode $value");
                         SecryptoSettings.enableDarkMode(value);
