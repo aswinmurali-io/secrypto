@@ -58,13 +58,16 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
                       backgroundColor: Colors.grey,
                       child: ClipOval(
                           child: Material(
+                              color: Colors.blueGrey,
                               child: InkWell(
-                                  onTap: () {},
-                                  child: CachedNetworkImage(
-                                    imageUrl: dpUrl ?? placeHolderDp,
-                                    placeholder: (context, url) => CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) => Icon(Icons.error),
-                                  )))))),
+                                onTap: () {},
+
+                                // child: CachedNetworkImage(
+                                //   imageUrl: dpUrl ?? placeHolderDp,
+                                //   placeholder: (context, url) => CircularProgressIndicator(),
+                                //   errorWidget: (context, url, error) => Icon(Icons.error),
+                                // ),
+                              ))))),
               Padding(
                   padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                   child: SizedBox(
