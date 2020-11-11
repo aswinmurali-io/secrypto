@@ -31,6 +31,8 @@ class _SettingsRouteState extends State<SettingsRoute> {
   String userGeneratedEmail;
   String userName;
 
+  bool showOptions = false;
+
   @override
   void setState(fn) {
     if (mounted) super.setState(fn);
@@ -44,6 +46,7 @@ class _SettingsRouteState extends State<SettingsRoute> {
     userGeneratedEmail = await User.getEmail;
     userName = await User.getName();
     darkModeEnabled = await SecryptoSettings.shouldDarkMode();
+    showOptions = true;
     setState(() => {shouldNarrate, shouldMorseCode, shouldReduceNetworkUsage, userGeneratedEmail});
 
     // This will take time so we set state later on
@@ -94,28 +97,22 @@ class _SettingsRouteState extends State<SettingsRoute> {
                       subtitle: Text(userGeneratedEmail ?? "..."),
                       isThreeLine: true,
                       leading: Hero(
-                        tag: 'me',
-                        child: Material(
-                          child: CircleAvatar(
-                            radius: 40.0,
-                            backgroundColor: Colors.grey,
-                            child: InkWell(
-                              onTap: () async {
-                                setState(() => dpUrl = null);
-                                await User.uploadDp();
-                                setState(() => dpUrl);
-                              },
-                              child: ClipOval(
-                                child: CachedNetworkImage(
-                                  imageUrl: dpUrl ?? placeHolderDp,
-                                  placeholder: (context, url) => CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) => Icon(Icons.error),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                          tag: 'me',
+                          child: Material(
+                              child: CircleAvatar(
+                                  radius: 40.0,
+                                  backgroundColor: Colors.grey,
+                                  child: InkWell(
+                                      onTap: () async {
+                                        setState(() => dpUrl = null);
+                                        await User.uploadDp();
+                                        setState(() => dpUrl);
+                                      },
+                                      child: ClipOval(
+                                          child: CachedNetworkImage(
+                                              imageUrl: dpUrl ?? placeHolderDp,
+                                              placeholder: (context, url) => CircularProgressIndicator(),
+                                              errorWidget: (context, url, error) => Icon(Icons.error))))))),
                       onTap: () {}),
                 ),
                 ListTile(
@@ -128,11 +125,13 @@ class _SettingsRouteState extends State<SettingsRoute> {
                     isThreeLine: true,
                     trailing: Switch(
                       value: shouldNarrate ?? false,
-                      onChanged: (value) async {
-                        setState(() => shouldNarrate = value);
-                        SecryptoSettings.enableNarration(value);
-                        await msgAccesiblity("Narrate Messages $value");
-                      },
+                      onChanged: showOptions
+                          ? (value) async {
+                              setState(() => shouldNarrate = value);
+                              SecryptoSettings.enableNarration(value);
+                              await msgAccesiblity("Narrate Messages $value");
+                            }
+                          : null,
                     ),
                     onTap: () {}),
                 ListTile(
@@ -142,11 +141,13 @@ class _SettingsRouteState extends State<SettingsRoute> {
                     isThreeLine: true,
                     trailing: Switch(
                       value: shouldMorseCode ?? false,
-                      onChanged: (value) async {
-                        setState(() => shouldMorseCode = value);
-                        SecryptoSettings.enableMorseCode(value);
-                        await msgAccesiblity("Use Morse Code $value");
-                      },
+                      onChanged: showOptions
+                          ? (value) async {
+                              setState(() => shouldMorseCode = value);
+                              SecryptoSettings.enableMorseCode(value);
+                              await msgAccesiblity("Use Morse Code $value");
+                            }
+                          : null,
                     ),
                     onTap: () {}),
                 ListTile(
@@ -156,11 +157,13 @@ class _SettingsRouteState extends State<SettingsRoute> {
                     isThreeLine: true,
                     trailing: Switch(
                       value: shouldReduceNetworkUsage ?? false,
-                      onChanged: (value) async {
-                        setState(() => shouldReduceNetworkUsage = value);
-                        SecryptoSettings.enableReducedNetorkUsage(value);
-                        await msgAccesiblity("Reduce Network Usage $value");
-                      },
+                      onChanged: showOptions
+                          ? (value) async {
+                              setState(() => shouldReduceNetworkUsage = value);
+                              SecryptoSettings.enableReducedNetorkUsage(value);
+                              await msgAccesiblity("Reduce Network Usage $value");
+                            }
+                          : null,
                     ),
                     onTap: () {}),
                 ListTile(
@@ -169,11 +172,13 @@ class _SettingsRouteState extends State<SettingsRoute> {
                     isThreeLine: true,
                     trailing: Switch(
                       value: sendSos ?? false,
-                      onChanged: (value) async {
-                        setState(() => sendSos = value);
-                        await msgAccesiblity("Send SOS Flash $value");
-                        SecryptoSettings.enableSosMorseFlash(value);
-                      },
+                      onChanged: showOptions
+                          ? (value) async {
+                              setState(() => sendSos = value);
+                              await msgAccesiblity("Send SOS Flash $value");
+                              SecryptoSettings.enableSosMorseFlash(value);
+                            }
+                          : null,
                     ),
                     onTap: () {}),
                 ListTile(
@@ -182,12 +187,14 @@ class _SettingsRouteState extends State<SettingsRoute> {
                     isThreeLine: true,
                     trailing: Switch(
                       value: darkModeEnabled ?? false,
-                      onChanged: (value) async {
-                        DynamicTheme.of(context).setBrightness(value ? Brightness.dark : Brightness.light);
-                        setState(() => darkModeEnabled = value);
-                        await msgAccesiblity("Dark Mode $value");
-                        SecryptoSettings.enableDarkMode(value);
-                      },
+                      onChanged: showOptions
+                          ? (value) async {
+                              DynamicTheme.of(context).setBrightness(value ? Brightness.dark : Brightness.light);
+                              setState(() => darkModeEnabled = value);
+                              await msgAccesiblity("Dark Mode $value");
+                              SecryptoSettings.enableDarkMode(value);
+                            }
+                          : null,
                     ),
                     onTap: () {}),
               ],

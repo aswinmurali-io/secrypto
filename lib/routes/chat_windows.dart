@@ -28,9 +28,21 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
   String dpUrl;
   File _image;
 
-  final sendMsgInput = TextEditingController();
+  TextEditingController sendMsgInput;
 
   _ChatWindowState(this.roomId, this.roomName);
+
+  @override
+  void initState() {
+    sendMsgInput = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    sendMsgInput.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

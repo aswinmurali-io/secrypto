@@ -33,19 +33,11 @@ class SecryptoTextField extends StatelessWidget {
       child: TextField(
         onTap: () async => await msgAccesiblity("Textbox selected!"),
         controller: controller,
-        style: TextStyle(
-          color: Colors.blueGrey,
-          fontSize: 14.0,
-        ),
-        cursorColor: Colors.blueGrey,
+        style: TextStyle(fontSize: 14.0),
         obscureText: obscureText,
         decoration: InputDecoration(
           labelText: hintText,
-          prefixIcon: Icon(
-            prefixIconData,
-            size: 18,
-            color: Colors.blueGrey,
-          ),
+          prefixIcon: Icon(prefixIconData, size: 18),
           filled: true,
           enabledBorder: UnderlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -56,19 +48,15 @@ class SecryptoTextField extends StatelessWidget {
             borderSide: BorderSide(color: Colors.blueGrey),
           ),
           suffixIcon: GestureDetector(
-            onTap: suffixIconOnTap,
-            child: Icon(
-              suffixIconData,
-              size: 18,
-              color: Colors.blue,
-            ),
-          ),
-          labelStyle: TextStyle(color: Colors.blueGrey),
-          focusColor: Colors.blueGrey,
+              onTap: suffixIconOnTap,
+              child: Icon(
+                suffixIconData,
+                size: 18,
+                color: Colors.blue,
+              )),
         ),
         onChanged: onChanged,
         keyboardType: keyboardType,
-        //autofillHints: autofillHints,
       ),
     );
   }
