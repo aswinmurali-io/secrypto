@@ -33,6 +33,9 @@ class User {
 
   static Future<String> getName() async =>
       (await db.collection('users').doc(auth.currentUser.uid).get()).data()[_userNameKey];
+  
+  static Future<String> getOtherName(String uid) async =>
+      (await db.collection('users').doc(uid).get()).data()[_userNameKey];
 
   static Future<void> signin() async {
     final generatedEmail = (await storage).getString(_userEmailKey);

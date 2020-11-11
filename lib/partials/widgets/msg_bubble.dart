@@ -1,7 +1,6 @@
 import 'package:bubble/bubble.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:secrypto/globals.dart';
 
 import '../accessibility.dart';
 import '../user.dart';
@@ -50,15 +49,15 @@ class _SecryptoChatBubbleState extends State<SecryptoChatBubble> {
       child: InkWell(
           onTap: () async {
             if (isReceiver) {
-              userName = await User.getName();
+              userName = await User.getOtherName(uid);
               setState(() => expandDetails = !expandDetails);
             } else
               userName = '';
 
             await msgAccesiblity(msg);
           },
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
+          child: Wrap(
+            //mainAxisSize: MainAxisSize.min,
             children: [
               if (isReceiver)
                 CircleAvatar(
@@ -70,6 +69,8 @@ class _SecryptoChatBubbleState extends State<SecryptoChatBubble> {
                       if (snapshot.hasData)
                         return CachedNetworkImage(
                           imageUrl: snapshot.data,
+                          fit: BoxFit.fill,
+                          width: 25,
                           progressIndicatorBuilder: (context, url, progress) =>
                               CircularProgressIndicator(value: progress.progress, backgroundColor: Colors.white),
                           errorWidget: (context, url, error) => Icon(Icons.error),
@@ -86,13 +87,17 @@ class _SecryptoChatBubbleState extends State<SecryptoChatBubble> {
                     style: TextStyle(color: Colors.grey[700]),
                   ),
                 ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(isReceiver ? 5 : 0, 0, 0, 0),
-                child: Text(
-                  msg ?? 'Unknown msg',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                    color: (isReceiver) ? Colors.black : Colors.white,
+              SizedBox(
+                //width: msg.length.toDouble() * 7.6,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(isReceiver ? 5 : 0, 5, 0, 0),
+                  child: Text(
+                    msg ?? 'Unknown msg',
+                    maxLines: 30,
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      color: (isReceiver) ? Colors.black : Colors.white,
+                    ),
                   ),
                 ),
               ),

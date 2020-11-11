@@ -1,11 +1,18 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../globals.dart';
 import '../partials/accessibility.dart';
@@ -30,6 +37,7 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
   File _image;
 
   TextEditingController sendMsgInput;
+  GlobalKey globalKey = new GlobalKey();
 
   _ChatWindowState(this.roomId, this.roomName);
 
@@ -43,6 +51,24 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
   void dispose() {
     sendMsgInput.dispose();
     super.dispose();
+  }
+
+  Future<void> _captureAndSharePng() async {
+    try {
+      RenderRepaintBoundary boundary =
+          globalKey.currentContext.findRenderObject();
+      var image = await boundary.toImage();
+      ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
+      Uint8List pngBytes = byteData.buffer.asUint8List();
+
+      final tempDir = await getTemporaryDirectory();
+      final file = await new File('${tempDir.path}/image.png').create();
+      await file.writeAsBytes(pngBytes);
+
+      await Share.file("$roomName\n$roomId", '$roomId.png', pngBytes, 'image/png');
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -77,14 +103,56 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
               Padding(
                   padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                   child: SizedBox(
-                      width: 260,
+                      width: 200,
                       child: Text(
                         roomName ?? 'Chat',
                         overflow: TextOverflow.ellipsis,
                       ))),
             ],
           ),
-          actions: [],
+          actions: [
+            IconButton(
+              icon: Icon(Icons.qr_code),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("QR Code"),
+                      content: SizedBox(
+                        width: 210,
+                        height: 210,
+                        child: RepaintBoundary(
+                          key: globalKey,
+                          child: QrImage(
+                            version: QrVersions.auto,
+                            data: "$roomName\n$roomId",
+                            gapless: true,
+                            size: 200.0,
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.black,
+                          ),
+                        ),
+                      ),
+                      actions: [
+                        FlatButton(
+                          child: Text("Cancel"),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                        FlatButton(
+                          child: Text("Save"),
+                          onPressed: () {
+                            _captureAndSharePng();
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            )
+          ],
         ),
         body: Container(
           height: MediaQuery.of(context).size.height / 1.13,
