@@ -1,14 +1,16 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:secrypto/partials/accessibility.dart';
-import 'package:secrypto/partials/user.dart';
-import 'package:secrypto/partials/widgets/msg_bubble.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../globals.dart';
+import '../partials/accessibility.dart';
 import '../partials/chat_history.dart';
 import '../partials/widgets/custom_textfield.dart';
+import '../partials/widgets/msg_bubble.dart';
 
 class ChatWindow extends StatefulWidget {
   final String roomId;
@@ -24,21 +26,11 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
   final String roomName;
 
   String dpUrl;
-
-  _ChatWindowState(this.roomId, this.roomName);
+  File _image;
 
   final sendMsgInput = TextEditingController();
 
-  void initAsync() async {
-    dpUrl = await User.getDp;
-    setState(() => dpUrl);
-  }
-
-  @override
-  void initState() {
-    initAsync();
-    super.initState();
-  }
+  _ChatWindowState(this.roomId, this.roomName);
 
   @override
   Widget build(BuildContext context) {
@@ -60,14 +52,15 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
                           child: Material(
                               color: Colors.blueGrey,
                               child: InkWell(
-                                onTap: () {},
-
-                                // child: CachedNetworkImage(
-                                //   imageUrl: dpUrl ?? placeHolderDp,
-                                //   placeholder: (context, url) => CircularProgressIndicator(),
-                                //   errorWidget: (context, url, error) => Icon(Icons.error),
-                                // ),
-                              ))))),
+                                  onTap: getImage,
+                                  child: FutureBuilder<String>(
+                                    future: ChatHistory.getDp(roomId),
+                                    builder: (context, snapshot) => CachedNetworkImage(
+                                      imageUrl: snapshot.hasData ? snapshot.data : placeHolderDp,
+                                      placeholder: (context, url) => CircularProgressIndicator(),
+                                      errorWidget: (context, url, error) => Icon(Icons.error),
+                                    ),
+                                  )))))),
               Padding(
                   padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                   child: SizedBox(
@@ -145,5 +138,20 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
         ),
       ),
     );
+  }
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      _image = File(pickedFile.path);
+      await cloud.ref(roomId).putFile(_image);
+      dpUrl = await cloud.ref(roomId).getDownloadURL();
+      setState(() => dpUrl);
+    }
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) super.setState(fn);
   }
 }

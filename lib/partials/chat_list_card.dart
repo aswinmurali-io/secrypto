@@ -1,29 +1,32 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:secrypto/routes/chat_windows.dart';
 
+import '../globals.dart';
+import '../routes/chat_windows.dart';
 import 'accessibility.dart';
+import 'chat_history.dart';
 
 class ChatList extends StatefulWidget {
   final String name;
   final String time;
-  final String profileURL;
   final String lastSendMsg;
   final String roomId;
 
-  ChatList({Key key, this.name, this.lastSendMsg, this.time, this.profileURL, this.roomId}) : super(key: key);
+  ChatList({Key key, this.name, this.lastSendMsg, this.time, this.roomId}) : super(key: key);
 
   @override
-  _ChatListState createState() => _ChatListState(name, lastSendMsg, time, profileURL, roomId);
+  _ChatListState createState() => _ChatListState(name, lastSendMsg, time, roomId);
 }
 
 class _ChatListState extends State<ChatList> {
   final String name;
   final String time;
-  final String profileURL;
   final String lastSendMsg;
   final String roomId;
 
-  _ChatListState(this.name, this.lastSendMsg, this.time, this.profileURL, this.roomId);
+  String profileURL;
+
+  _ChatListState(this.name, this.lastSendMsg, this.time, this.roomId);
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +40,14 @@ class _ChatListState extends State<ChatList> {
               child: CircleAvatar(
                   radius: 30.0,
                   child: ClipOval(
-                    child: (profileURL == null) ? Icon(Icons.portrait_rounded) : Image.network(profileURL),
+                    child: profileURL != null
+                        ? CachedNetworkImage(
+                            imageUrl: profileURL,
+                            progressIndicatorBuilder: (context, url, progress) =>
+                                CircularProgressIndicator(value: progress.progress, backgroundColor: Colors.white),
+                            errorWidget: (context, url, error) => Icon(Icons.error),
+                          )
+                        : Container(),
                   )),
             ),
             Padding(
@@ -68,5 +78,16 @@ class _ChatListState extends State<ChatList> {
         );
       },
     );
+  }
+
+  void initChatDpLoad() async {
+    profileURL = await ChatHistory.getDp(roomId);
+    setState(() => profileURL);
+  }
+
+  @override
+  void initState() {
+    initChatDpLoad();
+    super.initState();
   }
 }

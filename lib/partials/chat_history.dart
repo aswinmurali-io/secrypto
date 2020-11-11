@@ -20,4 +20,13 @@ class ChatHistory {
       (await db.collection(roomId).where(_timestampKey, isEqualTo: timestamp).get()).docs.remove({
         _timestampKey: timestamp,
       });
+
+  static Future<String> getDp(String roomId) async {
+    try {
+      return await cloud.ref(roomId).getDownloadURL();
+    } catch (error) {
+      if (error.code == 'object-not-found') print("No dp");
+    }
+    return null;
+  }
 }

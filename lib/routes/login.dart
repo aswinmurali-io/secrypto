@@ -2,17 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:secrypto/partials/widgets/custom_textfield.dart';
 
 import '../partials/user.dart';
+import '../partials/widgets/custom_textfield.dart';
 import '../routes/contact_list.dart';
-
-class LoginRoute extends StatefulWidget {
-  LoginRoute({Key key}) : super(key: key);
-
-  @override
-  _LoginRouteState createState() => _LoginRouteState();
-}
 
 Future<bool> autoLogin() async {
   await Firebase.initializeApp();
@@ -24,6 +17,13 @@ Future<bool> autoLogin() async {
     return true;
   }
   return false;
+}
+
+class LoginRoute extends StatefulWidget {
+  LoginRoute({Key key}) : super(key: key);
+
+  @override
+  _LoginRouteState createState() => _LoginRouteState();
 }
 
 class _LoginRouteState extends State<LoginRoute> {

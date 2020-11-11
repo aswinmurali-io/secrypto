@@ -57,5 +57,12 @@ class User {
     }
   }
 
-  static Future<String> get getDp async => await cloud.ref(auth.currentUser.uid).getDownloadURL();
+  static Future<String> get getDp async {
+    try {
+      return await cloud.ref(auth.currentUser.uid).getDownloadURL();
+    } catch (error) {
+      if (error.code == 'object-not-found') print("No dp");
+    }
+    return null;
+  }
 }

@@ -1,14 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:secrypto/partials/accessibility.dart';
-import 'package:secrypto/partials/user.dart';
 
 import '../dialog/session.dart';
-
 import '../globals.dart';
+import '../partials/accessibility.dart';
 import '../partials/chat_list_card.dart';
 import '../partials/rooms.dart';
-
+import '../partials/user.dart';
 import '../routes/settings.dart';
 
 class ContactListRoute extends StatefulWidget {
@@ -24,20 +22,6 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
   Map<String, Map<String, String>> rooms = {};
 
   String dpUrl;
-  void initAsync() async {
-    dpUrl = await User.getDp;
-    setState(() => dpUrl);
-  }
-
-  @override
-  void initState() {
-    initAsync();
-    Rooms.load();
-    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() => rooms = Rooms.rooms));
-    joinAnimation = AnimationController(value: 0.0, vsync: this, duration: Duration(milliseconds: 200));
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final roomIds = Rooms.rooms.keys.toList();
@@ -56,7 +40,6 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
                           child: ClipOval(
                               child: InkWell(
                                   onTap: () async {
-                                    setState(() => dpUrl = null);
                                     await User.uploadDp();
                                     setState(() => dpUrl);
                                   },
@@ -90,12 +73,10 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
                   children: [
                     for (int i = 0; i < Rooms.rooms.length; i++)
                       ChatList(
-                        roomId: roomIds[i],
-                        name: Rooms.rooms[roomIds[i]]['roomName'],
-                        lastSendMsg: '', // rooms[roomIds[i]]['lastSendMsg'],
-                        time: '', //rooms[roomIds[i]]['time'],
-                        profileURL: null,
-                      ) //rooms[roomIds[i]]['profileURL']),
+                          roomId: roomIds[i],
+                          name: Rooms.rooms[roomIds[i]]['roomName'],
+                          lastSendMsg: '', // rooms[roomIds[i]]['lastSendMsg'],
+                          time: '')
                   ],
                 )),
           ),
@@ -134,5 +115,30 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
                 )),
           ],
         ));
+  }
+
+  void initAsync() async {
+    dpUrl = await User.getDp;
+    setState(() => dpUrl);
+  }
+
+  @override
+  void dispose() {
+    joinAnimation.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    initAsync();
+    Rooms.load();
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() => rooms = Rooms.rooms));
+    joinAnimation = AnimationController(value: 0.0, vsync: this, duration: Duration(milliseconds: 200));
+    super.initState();
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) super.setState(fn);
   }
 }
