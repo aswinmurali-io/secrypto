@@ -27,6 +27,7 @@ dependencies:
   qrscan: ^0.2.17
   intl: ^0.16.1
   dynamic_theme: ^1.0.0
+  neumorphic: any
 
 dev_dependencies:
   flutter_test:
