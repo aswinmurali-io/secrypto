@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../globals.dart';
 import '../routes/chat_windows.dart';
 import 'accessibility.dart';
 import 'chat_history.dart';
@@ -47,7 +46,11 @@ class _ChatListState extends State<ChatList> {
                                 CircularProgressIndicator(value: progress.progress, backgroundColor: Colors.white),
                             errorWidget: (context, url, error) => Icon(Icons.error),
                           )
-                        : Container(),
+                        : IconButton(
+                            color: Colors.white,
+                            icon: Icon(Icons.upload_outlined),
+                            onPressed: () {},
+                          ),
                   )),
             ),
             Padding(
@@ -89,5 +92,10 @@ class _ChatListState extends State<ChatList> {
   void initState() {
     initChatDpLoad();
     super.initState();
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) super.setState(fn);
   }
 }

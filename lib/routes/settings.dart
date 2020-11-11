@@ -10,7 +10,7 @@ import '../partials/accessibility.dart';
 import '../partials/settings.dart';
 import '../partials/user.dart';
 
-// TODO: add logic for profile dp and transfer account
+// transfer account
 // TODO: remove qr code
 
 class SettingsRoute extends StatefulWidget {
