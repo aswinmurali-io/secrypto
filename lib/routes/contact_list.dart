@@ -68,6 +68,12 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
                     ));
                   });
                 }),
+            IconButton(
+                icon: Icon(Icons.refresh),
+                onPressed: () async {
+                  await msgAccesiblity("Chat refreshed");
+                  setState(() => null);
+                }),
           ],
         ),
         body: Scrollbar(

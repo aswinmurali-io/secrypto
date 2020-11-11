@@ -115,10 +115,10 @@ class _SettingsRouteState extends State<SettingsRoute> {
                                               errorWidget: (context, url, error) => Icon(Icons.error))))))),
                       onTap: () {}),
                 ),
-                ListTile(
-                    title: Text("Mirror Account"),
-                    subtitle: Text("Mirror account key via QR code into another device."),
-                    onTap: () {}),
+                // ListTile(
+                //     title: Text("Mirror Account"),
+                //     subtitle: Text("Mirror account key via QR code into another device."),
+                //     onTap: () {}),
                 ListTile(
                     title: Text("Narrate Messages"),
                     subtitle: Text("By enabling this all the incoming and outgoing messages are read by the device."),

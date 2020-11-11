@@ -13,12 +13,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:secrypto/partials/user.dart';
 
 import '../globals.dart';
 import '../partials/accessibility.dart';
 import '../partials/chat_history.dart';
 import '../partials/widgets/custom_textfield.dart';
 import '../partials/widgets/msg_bubble.dart';
+import 'group_members.dart';
 
 class ChatWindow extends StatefulWidget {
   final String roomId;
@@ -32,6 +34,8 @@ class ChatWindow extends StatefulWidget {
 class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateMixin {
   final String roomId;
   final String roomName;
+
+  Set _allUsers = {};
 
   String dpUrl;
   File _image;
@@ -55,8 +59,7 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
 
   Future<void> _captureAndSharePng() async {
     try {
-      RenderRepaintBoundary boundary =
-          globalKey.currentContext.findRenderObject();
+      RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
       var image = await boundary.toImage();
       ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
       Uint8List pngBytes = byteData.buffer.asUint8List();
@@ -103,7 +106,7 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
               Padding(
                   padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                   child: SizedBox(
-                      width: 200,
+                      width: 175,
                       child: Text(
                         roomName ?? 'Chat',
                         overflow: TextOverflow.ellipsis,
@@ -111,6 +114,13 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
             ],
           ),
           actions: [
+            IconButton(
+                icon: Icon(Icons.group),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => GroupMembersRoute(roomId: roomId, allUsers: _allUsers),
+                  ));
+                }),
             IconButton(
               icon: Icon(Icons.qr_code),
               onPressed: () {
@@ -174,6 +184,7 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
                               if (snapshot.data == null) return LinearProgressIndicator();
                               return Column(
                                 children: snapshot.data.docs.map((data) {
+                                  _allUsers.add(data['userId']);
                                   return SecryptoChatBubble(
                                       msg: data['msg'],
                                       isReceiver: data['userId'] != auth.currentUser.uid,
