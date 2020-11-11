@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:secrypto/partials/accessibility.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:qrscan/qrscan.dart' as scanner;
+
 import '../partials/rooms.dart';
 import '../partials/widgets/custom_textfield.dart';
 
@@ -67,12 +69,19 @@ class SessionJoinDialog {
                       ),
                     ),
                     actions: <Widget>[
-                      // if (!connectPressed)
-                      //   TextButton.icon(
-                      //     label: Text('QR Code'),
-                      //     icon: Icon(Icons.qr_code),
-                      //     onPressed: () => Navigator.of(context).pop(),
-                      //   ),
+                      if (!connectPressed)
+                        TextButton.icon(
+                          label: Text('QR Code'),
+                          icon: Icon(Icons.qr_code),
+                          onPressed: () async {
+                            List<String> data = (await scanner.scan()).toString().split('\n');
+                            if (data != null) {
+                              sessionCodeInputController.text = data[1];
+                              sessionNameController.text = data[0];
+                            }
+                            // Navigator.of(context).pop();
+                          },
+                        ),
                       TextButton.icon(
                         label:
                             (connectPressed) ? Text('Cancel', style: TextStyle(color: Colors.black38)) : Text('Cancel'),
