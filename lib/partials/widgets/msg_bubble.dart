@@ -49,8 +49,12 @@ class _SecryptoChatBubbleState extends State<SecryptoChatBubble> {
       color: (isReceiver) ? Colors.white.withOpacity(0.8) : Colors.blueGrey,
       child: InkWell(
           onTap: () async {
-            userName = await User.getName();
-            setState(() => expandDetails = !expandDetails);
+            if (isReceiver) {
+              userName = await User.getName();
+              setState(() => expandDetails = !expandDetails);
+            } else
+              userName = '';
+
             await msgAccesiblity(msg);
           },
           child: Row(

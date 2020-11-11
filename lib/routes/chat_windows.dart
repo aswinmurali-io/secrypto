@@ -107,11 +107,14 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
                               return Column(
                                 children: snapshot.data.docs.map((data) {
                                   return SecryptoChatBubble(
-                                    msg: data['msg'],
-                                    isReceiver: data['userId'] != auth.currentUser.uid,
-                                    uid: data['userId'],
-                                    timestamp: DateFormat('dd-MM-yy hh:MM').format(data['timestamp'].toDate())//DateFormat('yyyy-MM-dd').format(DateTime.fromMillisecondsSinceEpoch()).toString(),
-                                  );
+                                      msg: data['msg'],
+                                      isReceiver: data['userId'] != auth.currentUser.uid,
+                                      uid: data['userId'],
+                                      timestamp: (() {
+                                        if (data['timestamp'] != null && data['userId'] != auth.currentUser.uid)
+                                          return DateFormat('dd-MM-yy hh:MM').format(data['timestamp'].toDate());
+                                        return '';
+                                      }()));
                                 }).toList(),
                               );
                             })),
