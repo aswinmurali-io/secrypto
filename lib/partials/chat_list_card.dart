@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../globals.dart';
@@ -53,24 +54,26 @@ class _ChatListState extends State<ChatList> {
             Hero(
               tag: roomId,
               child: Material(
-                child: CircleAvatar(
-                    radius: 30.0,
-                    child: ClipOval(
-                      child: profileURL != null
-                          ? CachedNetworkImage(
-                              imageUrl: profileURL,
-                              width: 210,
-                              fit: BoxFit.fill,
-                              progressIndicatorBuilder: (context, url, progress) =>
-                                  CircularProgressIndicator(value: progress.progress, backgroundColor: Colors.white),
-                              errorWidget: (context, url, error) => Icon(Icons.error),
-                            )
-                          : IconButton(
-                              color: Colors.white,
-                              icon: Icon(Icons.upload_outlined),
-                              onPressed: getImage,
-                            ),
-                    )),
+                child: BounceIn(
+                  child: CircleAvatar(
+                      radius: 30.0,
+                      child: ClipOval(
+                        child: profileURL != null
+                            ? CachedNetworkImage(
+                                imageUrl: profileURL,
+                                width: 210,
+                                fit: BoxFit.fill,
+                                progressIndicatorBuilder: (context, url, progress) =>
+                                    CircularProgressIndicator(value: progress.progress, backgroundColor: Colors.white),
+                                errorWidget: (context, url, error) => Icon(Icons.error),
+                              )
+                            : IconButton(
+                                color: Colors.white,
+                                icon: Icon(Icons.upload_outlined),
+                                onPressed: getImage,
+                              ),
+                      )),
+                ),
               ),
             ),
             Padding(

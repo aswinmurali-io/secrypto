@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animator/flutter_animator.dart';
 
 import '../dialog/session.dart';
 import '../globals.dart';
@@ -35,21 +36,23 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
                 child: Material(
                     child: Transform.scale(
                         scale: 0.8,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.grey,
-                          child: ClipOval(
-                            child: InkWell(
-                                onTap: () async {
-                                  await User.uploadDp();
-                                  setState(() => dpUrl);
-                                },
-                                child: CachedNetworkImage(
-                                  imageUrl: dpUrl ?? placeHolderDp,
-                                  fit: BoxFit.fill,
-                                  width: 100,
-                                  placeholder: (context, url) => CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) => Icon(Icons.error),
-                                )),
+                        child: BounceIn(
+                          child: CircleAvatar(
+                            backgroundColor: Colors.grey,
+                            child: ClipOval(
+                              child: InkWell(
+                                  onTap: () async {
+                                    await User.uploadDp();
+                                    setState(() => dpUrl);
+                                  },
+                                  child: CachedNetworkImage(
+                                    imageUrl: dpUrl ?? placeHolderDp,
+                                    fit: BoxFit.fill,
+                                    width: 100,
+                                    placeholder: (context, url) => CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) => Icon(Icons.error),
+                                  )),
+                            ),
                           ),
                         )))),
           ),
@@ -86,36 +89,40 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
         ),
         floatingActionButton: Wrap(
           children: [
-            FloatingActionButton.extended(
-              heroTag: 'Join Session',
-              onPressed: () async {
-                await SessionJoinDialog.render(context);
-                setState(() {});
-              },
-              tooltip: 'Join a session to connect with people.',
-              icon: Icon(Icons.connect_without_contact),
-              label: Text("Join"),
+            BounceIn(
+              child: FloatingActionButton.extended(
+                heroTag: 'Join Session',
+                onPressed: () async {
+                  await SessionJoinDialog.render(context);
+                  setState(() {});
+                },
+                tooltip: 'Join a session to connect with people.',
+                icon: Icon(Icons.connect_without_contact),
+                label: Text("Join"),
+              ),
             ),
-            Padding(
-                padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                child: FloatingActionButton.extended(
-                  heroTag: 'Add Session',
-                  onPressed: () async {
-                    joinAnimation.forward();
-                    _scaffoldKey.currentState.showSnackBar(
-                      SnackBar(content: Text("Session created, Link copied into clipboard!")),
-                    );
-                    await msgAccesiblity("Create, If your disabled person, Ask help.");
-                    await SessionAddDialog.render(context);
-                    setState(() {});
-                    Future.delayed(Duration(seconds: 2), () {
-                      joinAnimation.reverse();
-                    });
-                  },
-                  tooltip: 'Create a session for others to connect',
-                  icon: AnimatedIcon(icon: AnimatedIcons.add_event, progress: joinAnimation),
-                  label: Text("Create"),
-                )),
+            BounceIn(
+              child: Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                  child: FloatingActionButton.extended(
+                    heroTag: 'Add Session',
+                    onPressed: () async {
+                      joinAnimation.forward();
+                      _scaffoldKey.currentState.showSnackBar(
+                        SnackBar(content: Text("Session created, Link copied into clipboard!")),
+                      );
+                      await msgAccesiblity("Create, If your disabled person, Ask help.");
+                      await SessionAddDialog.render(context);
+                      setState(() {});
+                      Future.delayed(Duration(seconds: 2), () {
+                        joinAnimation.reverse();
+                      });
+                    },
+                    tooltip: 'Create a session for others to connect',
+                    icon: AnimatedIcon(icon: AnimatedIcons.add_event, progress: joinAnimation),
+                    label: Text("Create"),
+                  )),
+            ),
           ],
         ));
   }
