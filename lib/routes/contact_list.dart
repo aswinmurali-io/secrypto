@@ -38,16 +38,19 @@ class _ContactListRouteState extends State<ContactListRoute> with SingleTickerPr
                         child: CircleAvatar(
                           backgroundColor: Colors.grey,
                           child: ClipOval(
-                              child: InkWell(
-                                  onTap: () async {
-                                    await User.uploadDp();
-                                    setState(() => dpUrl);
-                                  },
-                                  child: CachedNetworkImage(
-                                    imageUrl: dpUrl ?? placeHolderDp,
-                                    placeholder: (context, url) => CircularProgressIndicator(),
-                                    errorWidget: (context, url, error) => Icon(Icons.error),
-                                  ))),
+                            child: InkWell(
+                                onTap: () async {
+                                  await User.uploadDp();
+                                  setState(() => dpUrl);
+                                },
+                                child: CachedNetworkImage(
+                                  imageUrl: dpUrl ?? placeHolderDp,
+                                  fit: BoxFit.fill,
+                                  width: 100,
+                                  placeholder: (context, url) => CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) => Icon(Icons.error),
+                                )),
+                          ),
                         )))),
           ),
           title: Text("Secrypto"),

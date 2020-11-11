@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../globals.dart';
 import '../routes/chat_windows.dart';
 import 'accessibility.dart';
 import 'chat_history.dart';
@@ -27,6 +31,18 @@ class _ChatListState extends State<ChatList> {
 
   _ChatListState(this.name, this.lastSendMsg, this.time, this.roomId);
 
+  File _image;
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      _image = File(pickedFile.path);
+      await cloud.ref(roomId).putFile(_image);
+      profileURL = await cloud.ref(roomId).getDownloadURL();
+      setState(() => profileURL);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -36,22 +52,26 @@ class _ChatListState extends State<ChatList> {
           children: [
             Hero(
               tag: roomId,
-              child: CircleAvatar(
-                  radius: 30.0,
-                  child: ClipOval(
-                    child: profileURL != null
-                        ? CachedNetworkImage(
-                            imageUrl: profileURL,
-                            progressIndicatorBuilder: (context, url, progress) =>
-                                CircularProgressIndicator(value: progress.progress, backgroundColor: Colors.white),
-                            errorWidget: (context, url, error) => Icon(Icons.error),
-                          )
-                        : IconButton(
-                            color: Colors.white,
-                            icon: Icon(Icons.upload_outlined),
-                            onPressed: () {},
-                          ),
-                  )),
+              child: Material(
+                child: CircleAvatar(
+                    radius: 30.0,
+                    child: ClipOval(
+                      child: profileURL != null
+                          ? CachedNetworkImage(
+                              imageUrl: profileURL,
+                              width: 210,
+                              fit: BoxFit.fill,
+                              progressIndicatorBuilder: (context, url, progress) =>
+                                  CircularProgressIndicator(value: progress.progress, backgroundColor: Colors.white),
+                              errorWidget: (context, url, error) => Icon(Icons.error),
+                            )
+                          : IconButton(
+                              color: Colors.white,
+                              icon: Icon(Icons.upload_outlined),
+                              onPressed: getImage,
+                            ),
+                    )),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(15.0),

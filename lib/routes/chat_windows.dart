@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import '../globals.dart';
 import '../partials/accessibility.dart';
@@ -108,6 +109,8 @@ class _ChatWindowState extends State<ChatWindow> with SingleTickerProviderStateM
                                   return SecryptoChatBubble(
                                     msg: data['msg'],
                                     isReceiver: data['userId'] != auth.currentUser.uid,
+                                    uid: data['userId'],
+                                    timestamp: DateFormat('dd-MM-yy hh:MM').format(data['timestamp'].toDate())//DateFormat('yyyy-MM-dd').format(DateTime.fromMillisecondsSinceEpoch()).toString(),
                                   );
                                 }).toList(),
                               );
